@@ -60,6 +60,11 @@ public class App {
                     // Pega somente os caracteres necessários
                     // de cada String da linha.
                     String palavra = removeSomeCharacters(linha[i]);
+                    // Testa se a palavra não está presente
+                    // dentro da lista stopWords
+                    if(!stopWords.contains(palavra)){
+                        alice.add(palavra);
+                    }
                     // Imprime a String sem os caracteres desnecessários.
                     System.out.println(palavra);
                 }
@@ -67,6 +72,7 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
+            
             // Captura uma excessão caso houver.
         } catch (Exception e) {
             // Imprime o erro da excessão.
