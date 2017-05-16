@@ -17,13 +17,16 @@ public class App {
             BufferedReader arquivo
                     = new BufferedReader(new FileReader("src/documentos/stopwords.txt"));
             // Vai testando se tem linha no arquivo dentro de um while.
+            int contador = 1;
             while (arquivo.ready()) {
                 // Pega toda a linha numa String e passa para a próxima linha.
+
                 String linha = arquivo.readLine();
                 // Adiciona a linha dentro da lista.
-                lista.add(linha);
+                lista.add(linha, contador);
                 // Imprime a linha que foi pega.
                 System.out.println(linha);
+                contador++;
             }
             // Fecha o arquivo.
             arquivo.close();
