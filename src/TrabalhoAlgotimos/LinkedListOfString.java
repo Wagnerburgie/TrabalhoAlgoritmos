@@ -8,10 +8,11 @@ public class LinkedListOfString {
 
         public String element;
         public Node next;
-
+        public int linha;
         public Node(String element) {
             this.element = element;
             next = null;
+            this.linha = 0;
         }
     }
 
@@ -36,8 +37,9 @@ public class LinkedListOfString {
      *
      * @param element elemento a ser adicionado ao final da lista
      */
-    public void add(String element) {
+    public void add(String element, int linha) {
         Node aux = new Node(element);
+        aux.linha = linha;
         if (head == null) {
             head = aux;
         } else {
@@ -45,6 +47,7 @@ public class LinkedListOfString {
         }
         tail = aux;
         count++;
+        
     }
 
     /**
