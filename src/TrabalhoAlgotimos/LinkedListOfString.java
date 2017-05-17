@@ -1,6 +1,5 @@
 package TrabalhoAlgotimos;
 
-
 public class LinkedListOfString {
 
     // Classe interna Node
@@ -8,11 +7,12 @@ public class LinkedListOfString {
 
         public String element;
         public Node next;
-        public int linha;
+        public int page;
+
         public Node(String element) {
             this.element = element;
             next = null;
-            this.linha = 0;
+            this.page = 0;
         }
     }
 
@@ -37,9 +37,9 @@ public class LinkedListOfString {
      *
      * @param element elemento a ser adicionado ao final da lista
      */
-    public void add(String element, int linha) {
+    public void add(String element, int page) {
         Node aux = new Node(element);
-        aux.linha = linha;
+        aux.page = page;
         if (head == null) {
             head = aux;
         } else {
@@ -47,7 +47,7 @@ public class LinkedListOfString {
         }
         tail = aux;
         count++;
-        
+
     }
 
     /**
@@ -260,10 +260,32 @@ public class LinkedListOfString {
      * @param element o elemento a ser testado
      * @return true se a lista contem o elemento especificado
      */
-    public boolean contains(String element) {
+    public boolean containsElement(String element) {
         Node aux = head;
         while (aux != null) {
-            if (aux.element.equals(element)) {
+            if (aux.element.equalsIgnoreCase(element)) {
+                return (true);
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+    
+    public boolean containsPage(int page) {
+        Node aux = head;
+        while (aux != null) {
+            if (aux.page == page) {
+                return (true);
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+    
+    public boolean containsElementAndPage(String element, int page) {
+        Node aux = head;
+        while (aux != null) {
+            if ((aux.element.equalsIgnoreCase(element)) && (aux.page == page)) {
                 return (true);
             }
             aux = aux.next;
@@ -278,25 +300,29 @@ public class LinkedListOfString {
         Node aux = head;
 
         while (aux != null) {
-            s.append(aux.element.toString());
+            s.append("Palavra: ");
+            s.append(aux.element);
+            s.append("\n");
+            s.append("Página: ");
+            s.append(aux.page);
             s.append("\n");
             aux = aux.next;
         }
 
         return s.toString();
     }
-    
+
     // Implementação de aluno
-    public void reverse () {
-        
+    public void reverse() {
+
         if (count <= 1) {
             return;
         }
-        
+
         tail = head;
         Node prev = null;
         Node tracker = head.next;
-        
+
         while (prev != head) {
             head.next = prev;
             prev = head;

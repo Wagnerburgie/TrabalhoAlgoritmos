@@ -81,12 +81,12 @@ public class App {
                     String palavra = removeSomeCharacters(linha[i]);
                     // Testa se a palavra não está presente
                     // dentro da lista stopWords
-                    if (!stopWords.contains(palavra) && !palavra.equals("")) {
+                    if (!stopWords.containsElement(palavra) 
+                            && !palavra.equals("") 
+                            && !alice.containsElementAndPage(palavra, contadorPagina)) {
                         // Caso a palavra não esteja na stopWords,
                         // ela será adicionada a lista alice.
                         alice.add(palavra, contadorPagina);
-                        System.out.println("Palavra: " + palavra + ".\n"
-                                + "Linha: " + contadorPagina + ".");
                     }
                 }
                 // Aumenta contador.
@@ -94,12 +94,13 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
+            // Imprime a lista alice.
+            System.out.println(alice.toString());
             // Captura uma excessão caso houver.
         } catch (Exception e) {
             // Imprime o erro da excessão.
             System.out.println("Erro: " + e.getMessage());
         }
-
     }
 
     // Método que remove caracteres desnecessários.
