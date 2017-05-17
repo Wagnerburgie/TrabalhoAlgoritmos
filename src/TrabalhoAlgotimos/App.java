@@ -16,17 +16,23 @@ public class App {
             // Pega o arquivo stopwords.txt dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader("src/documentos/stopwords.txt"));
+            // Cria um contador pra percorrer as linhas.
+            int contadorLinha = 1;
+            // Cria um contador pra percorrer as páginas.
+            int contadorPagina = 1;
             // Vai testando se tem linha no arquivo dentro de um while.
-            int contador = 1;
             while (arquivo.ready()) {
+                // Muda de página a cada 40 linhas.
+                if(contadorLinha > 40){
+                    contadorPagina++;
+                    contadorLinha = 1;
+                }
                 // Pega toda a linha numa String e passa para a próxima linha.
-
                 String linha = arquivo.readLine();
                 // Adiciona a linha dentro da lista.
-                lista.add(linha, contador);
-                // Imprime a linha que foi pega.
-                System.out.println(linha);
-                contador++;
+                lista.add(linha, contadorPagina);
+                // Aumenta o contador.
+                contadorLinha++;
             }
             // Fecha o arquivo.
             arquivo.close();
@@ -55,27 +61,39 @@ public class App {
             // Cria o array que irá conter todas as palavras
             // de cada linha do arquivo alice.txt.
             String[] linha;
+            // Criando contador para indicar a linha.
+            int contadorLinha = 1;
+            // Criando contador para indicar a página.
+            int contadorPagina = 1;
             // Vai testando se tem linha no arquivo dentro de um while.
             while (arquivo.ready()) {
+                // Muda de página a cada 40 linhas.
+                if(contadorLinha > 40){
+                    contadorPagina++;
+                    contadorLinha = 1;
+                }
                 // Transforma a linha num array de Strings.
                 linha = arquivo.readLine().split(" ");
+                // Cria um for pra percorrer as Strings da linha.
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
                     // de cada String da linha.
                     String palavra = removeSomeCharacters(linha[i]);
                     // Testa se a palavra não está presente
                     // dentro da lista stopWords
-                    if(!stopWords.contains(palavra)){
-                        alice.add(palavra);
+                    if (!stopWords.contains(palavra) && !palavra.equals("")) {
+                        // Caso a palavra não esteja na stopWords,
+                        // ela será adicionada a lista alice.
+                        alice.add(palavra, contadorPagina);
+                        System.out.println("Palavra: " + palavra + ".\n"
+                                + "Linha: " + contadorPagina + ".");
                     }
-                    // Imprime a String sem os caracteres desnecessários.
-                    System.out.println(palavra);
                 }
-
+                // Aumenta contador.
+                contadorLinha++;
             }
             // Fecha o arquivo.
             arquivo.close();
-            
             // Captura uma excessão caso houver.
         } catch (Exception e) {
             // Imprime o erro da excessão.
@@ -101,8 +119,7 @@ public class App {
                 replace("¹", "").replace("²", "").replace("³", "").
                 replace("£", "").replace("¢", "").replace("¬", "").
                 replace("°", "").replace(":", "").replace("º", "").
-                replace("\"","");
-                
+                replace("\"", "").replace(" ", "").replace("\n","");
         // Retorna o resultado.
         return resultado;
     }
