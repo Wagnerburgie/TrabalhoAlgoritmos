@@ -24,14 +24,17 @@ public class App {
             while (arquivo.ready()) {
                 // Muda de página a cada 40 linhas.
                 if(contadorLinha > 40){
+                    // Aumenta o contador da página.
                     contadorPagina++;
+                    // Contador da linha volta a ser 1
+                    // para indicar primeira linha da nova página.
                     contadorLinha = 1;
                 }
                 // Pega toda a linha numa String e passa para a próxima linha.
                 String linha = arquivo.readLine();
                 // Adiciona a linha dentro da lista.
                 lista.add(linha, contadorPagina);
-                // Aumenta o contador.
+                // Aumenta o contador da linha.
                 contadorLinha++;
             }
             // Fecha o arquivo.
