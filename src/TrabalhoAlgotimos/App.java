@@ -34,7 +34,7 @@ public class App {
                 // Pega toda a linha numa String e passa para a próxima linha.
                 String linha = arquivo.readLine();
                 // Adiciona a linha dentro da lista.
-                lista.add(linha, contadorPagina);
+                lista.add(linha, contadorPagina, 0);
                 // Aumenta o contador da linha.
                 contadorLinha++;
             }
@@ -92,10 +92,10 @@ public class App {
                             && !palavra.equals("")) {
                         // Caso a palavra não esteja na stopWords,
                         // ela será adicionada a lista alice.
-                        if (!alice.containsElementAndPage(palavra, contadorPagina)) {
-                            alice.add(palavra, contadorPagina);
+                        if (!alice.containsElementAndPage(palavra, contadorPagina)) {                            
                             ocorrencias = alice.getOccurrences(palavra);                            
-                            ocorrencias++;                            
+                            ocorrencias++;       
+                            alice.add(palavra, contadorPagina, ocorrencias);
                             alice.changeOccurrences(palavra, contadorPagina, ocorrencias);
                         } else if (alice.containsElementAndPage(palavra, contadorPagina)) {
                             ocorrencias = alice.getOccurrences(palavra);
