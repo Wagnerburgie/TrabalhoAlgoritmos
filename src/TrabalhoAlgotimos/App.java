@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.Node;
 
 public class App {
 
@@ -23,7 +24,7 @@ public class App {
             // Vai testando se tem linha no arquivo dentro de um while.
             while (arquivo.ready()) {
                 // Muda de página a cada 40 linhas.
-                if(contadorLinha > 40){
+                if (contadorLinha > 40) {
                     // Aumenta o contador da página.
                     contadorPagina++;
                     // Contador da linha volta a ser 1
@@ -68,12 +69,15 @@ public class App {
             int contadorLinha = 1;
             // Criando contador para indicar a página.
             int contadorPagina = 1;
+            // Criando ocorrencias dentro de uma página.
+            int ocorrencias = 0;
             // Vai testando se tem linha no arquivo dentro de um while.
             while (arquivo.ready()) {
                 // Muda de página a cada 40 linhas.
-                if(contadorLinha > 40){
+                if (contadorLinha > 40) {
                     contadorPagina++;
                     contadorLinha = 1;
+                    ocorrencias = 0;
                 }
                 // Transforma a linha num array de Strings.
                 linha = arquivo.readLine().split(" |\\-");
@@ -84,18 +88,20 @@ public class App {
                     String palavra = removeSomeCharacters(linha[i]);
                     // Testa se a palavra não está presente
                     // dentro da lista stopWords
-                    if (!stopWords.containsElement(palavra) 
-                            && !palavra.equals("") 
-                            ) {
+                    if (!stopWords.containsElement(palavra)
+                            && !palavra.equals("")) {
                         // Caso a palavra não esteja na stopWords,
                         // ela será adicionada a lista alice.
-                        if(!alice.containsElementAndPage(palavra, contadorPagina)){
-                        alice.add(palavra, contadorPagina);
+                        if (!alice.containsElementAndPage(palavra, contadorPagina)) {
+                            alice.add(palavra, contadorPagina);
+                            ocorrencias = alice.getOccurrences(palavra);                            
+                            ocorrencias++;                            
+                            alice.changeOccurrences(palavra, contadorPagina, ocorrencias);
+                        } else if (alice.containsElementAndPage(palavra, contadorPagina)) {
+                            ocorrencias = alice.getOccurrences(palavra);
+                            ocorrencias++;
+                            alice.changeOccurrences(palavra, contadorPagina, ocorrencias);
                         }
-                        else if(alice.containsElementAndPage(palavra, contadorPagina)){
-                        
-                        
-                        }    
                     }
                 }
                 // Aumenta contador.
@@ -129,7 +135,7 @@ public class App {
                 replace("¹", "").replace("²", "").replace("³", "").
                 replace("£", "").replace("¢", "").replace("¬", "").
                 replace("°", "").replace(":", "").replace("º", "").
-                replace("\"", "").replace(" ", "").replace("\n","");
+                replace("\"", "").replace(" ", "").replace("\n", "");
         // Retorna o resultado.
         return resultado;
     }

@@ -2,19 +2,32 @@ package TrabalhoAlgotimos;
 
 public class LinkedListOfString {
 
+    // Cria classe Page (página)
+    public class Page {
+
+        public int numeroDaPagina;
+        public int occorenciasNaPagina;
+        
+        public Page(){
+        }
+        
+        public Page(int numero, int ocorrencias){
+            this.numeroDaPagina = numero;
+            this.occorenciasNaPagina = ocorrencias;
+        }
+    }
+
     // Classe interna Node
     private class Node {
 
         public String element;
         public Node next;
-        public int page;
-        public int ocorrenciaEl;
+        public Page page;
 
         public Node(String element) {
             this.element = element;
             next = null;
-            this.page = 0;
-            this.ocorrenciaEl = 0;
+            this.page = new Page();
         }
     }
 
@@ -39,9 +52,9 @@ public class LinkedListOfString {
      *
      * @param element elemento a ser adicionado ao final da lista
      */
-    public void add(String element, int page) {
+    public void add(String element, int numeroPagina) {
         Node aux = new Node(element);
-        aux.page = page;
+        aux.page.numeroDaPagina = numeroPagina;
         if (head == null) {
             head = aux;
         } else {
@@ -104,19 +117,29 @@ public class LinkedListOfString {
         }
         return (aux.element);
     }
-
-    public Node getString(String palavra) {
-
+    
+    public int getOccurrences(String element) {        
         Node aux = head;
-
         for (int i = 1; i < count; i++) {
-            if (aux.equals(palavra)) {
-                return aux;
+            if (aux.element.equalsIgnoreCase(element)) {
+                return aux.page.occorenciasNaPagina;
             }
             aux = aux.next;
         }
+        return 0;
+    }
 
-        return null;
+    public void changeOccurrences(String palavra, int numero, int ocorrencias) {
+        Node aux = head;
+        for (int i = 1; i < count; i++) {
+            if (aux.element.equalsIgnoreCase(palavra) 
+                    && aux.page.numeroDaPagina == numero) {
+                aux.page.occorenciasNaPagina = ocorrencias;
+                System.out.println(ocorrencias);
+                return;
+            }
+            aux = aux.next;
+        }
     }
 
     /**
@@ -287,10 +310,10 @@ public class LinkedListOfString {
         return false;
     }
 
-    public boolean containsPage(int page) {
+    public boolean containsPage(int numero) {
         Node aux = head;
         while (aux != null) {
-            if (aux.page == page) {
+            if (aux.page.numeroDaPagina == numero) {
                 return (true);
             }
             aux = aux.next;
@@ -298,10 +321,11 @@ public class LinkedListOfString {
         return false;
     }
 
-    public boolean containsElementAndPage(String element, int page) {
+    public boolean containsElementAndPage(String element, int numero) {
         Node aux = head;
         while (aux != null) {
-            if ((aux.element.equalsIgnoreCase(element)) && (aux.page == page)) {
+            if ((aux.element.equalsIgnoreCase(element)) 
+                    && (aux.page.numeroDaPagina == numero)) {
                 return (true);
             }
             aux = aux.next;
@@ -319,8 +343,11 @@ public class LinkedListOfString {
             s.append("Palavra: ");
             s.append(aux.element);
             s.append("\n");
-            s.append("Página: ");
-            s.append(aux.page);
+            s.append("Número da Página: ");
+            s.append(aux.page.numeroDaPagina);
+            s.append("\n");
+            s.append("Ocorrencias na Página: ");
+            s.append(aux.page.occorenciasNaPagina);
             s.append("\n");
             aux = aux.next;
         }
