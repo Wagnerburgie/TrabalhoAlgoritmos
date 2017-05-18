@@ -86,10 +86,16 @@ public class App {
                     // dentro da lista stopWords
                     if (!stopWords.containsElement(palavra) 
                             && !palavra.equals("") 
-                            && !alice.containsElementAndPage(palavra, contadorPagina)) {
+                            ) {
                         // Caso a palavra não esteja na stopWords,
                         // ela será adicionada a lista alice.
+                        if(!alice.containsElementAndPage(palavra, contadorPagina)){
                         alice.add(palavra, contadorPagina);
+                        }
+                        else if(alice.containsElementAndPage(palavra, contadorPagina)){
+                        
+                        
+                        }    
                     }
                 }
                 // Aumenta contador.

@@ -8,11 +8,13 @@ public class LinkedListOfString {
         public String element;
         public Node next;
         public int page;
+        public int ocorrenciaEl;
 
         public Node(String element) {
             this.element = element;
             next = null;
             this.page = 0;
+            this.ocorrenciaEl = 0;
         }
     }
 
@@ -101,6 +103,20 @@ public class LinkedListOfString {
             c++;
         }
         return (aux.element);
+    }
+
+    public Node getString(String palavra) {
+
+        Node aux = head;
+
+        for (int i = 1; i < count; i++) {
+            if (aux.equals(palavra)) {
+                return aux;
+            }
+            aux = aux.next;
+        }
+
+        return null;
     }
 
     /**
@@ -270,7 +286,7 @@ public class LinkedListOfString {
         }
         return false;
     }
-    
+
     public boolean containsPage(int page) {
         Node aux = head;
         while (aux != null) {
@@ -281,7 +297,7 @@ public class LinkedListOfString {
         }
         return false;
     }
-    
+
     public boolean containsElementAndPage(String element, int page) {
         Node aux = head;
         while (aux != null) {
