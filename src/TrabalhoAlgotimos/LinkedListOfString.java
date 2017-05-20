@@ -1,9 +1,12 @@
 package TrabalhoAlgotimos;
 
+import java.util.ArrayList;
+
 public class LinkedListOfString {
 
     // Classe Page (página).
     public class Page {
+
         // Número da página.
         public int numeroDaPagina;
         // Ocorrências de uma palavra na página.
@@ -22,13 +25,12 @@ public class LinkedListOfString {
 
         public String element;
         public Node next;
-        // Atributo página.
-        public Page page;
+        private ArrayList<Page> paginas;
 
         public Node(String element) {
             this.element = element;
             next = null;
-            this.page = new Page();
+            paginas = new ArrayList<>();
         }
     }
 
@@ -42,16 +44,15 @@ public class LinkedListOfString {
         count = 0;
     }
 
-    public void add(String element, int numeroPagina, int ocorrencias) {
-        Node aux = new Node(element);
-        aux.page.numeroDaPagina = numeroPagina;
-        aux.page.occorenciasNaPagina = ocorrencias;
+    public void add(String element, int numeroPagina) {
+        Node novo = new Node(element);
+        novo.paginas.add(new Page(numeroPagina, 1));        
         if (head == null) {
-            head = aux;
+            head = novo;
         } else {
-            tail.next = aux;
+            tail.next = novo;
         }
-        tail = aux;
+        tail = novo;
         count++;
 
     }
@@ -95,11 +96,15 @@ public class LinkedListOfString {
         return (aux.element);
     }
 
-    public int getOccurrences(String element) {
+    public int getOccurrences(String element, int numeroDaPagina) {
         Node aux = head;
         for (int i = 1; i < count; i++) {
             if (aux.element.equalsIgnoreCase(element)) {
-                return aux.page.occorenciasNaPagina;
+                for (int j = 0; j < aux.paginas.size(); j++) {
+                    if (aux.paginas.get(j).numeroDaPagina == numeroDaPagina) {
+                        return aux.paginas.get(j).occorenciasNaPagina;
+                    }
+                }
             }
             aux = aux.next;
         }
@@ -112,12 +117,17 @@ public class LinkedListOfString {
         for (int i = 1; i < count; i++) {
             // Testa se a palavra e o número da página
             // são os mesmos dos parâmetros.
-            if (aux.element.equalsIgnoreCase(palavra)
-                    && aux.page.numeroDaPagina == numero) {
-                // Altera a ocorrência da palavra na página.
-                aux.page.occorenciasNaPagina = ocorrencias;
-                // Finaliza o método por não precisar 
-                // continuar depois da alteração.
+            if (aux.element.equalsIgnoreCase(palavra)) {
+                for (int j = 0; j < aux.paginas.size(); j++) {
+                    if (aux.paginas.get(j).numeroDaPagina == numero) {
+                        // Altera a ocorrência da palavra na página.
+                        aux.paginas.get(j).occorenciasNaPagina = ocorrencias;
+                        // Finaliza o método por não precisar 
+                        // continuar depois da alteração.
+                        return;
+                    }
+                }
+                aux.paginas.add(new Page(numero, ocorrencias));
                 return;
             }
             aux = aux.next;
@@ -243,23 +253,17 @@ public class LinkedListOfString {
         return false;
     }
 
-    public boolean containsPage(int numero) {
-        Node aux = head;
-        while (aux != null) {
-            if (aux.page.numeroDaPagina == numero) {
-                return (true);
-            }
-            aux = aux.next;
-        }
-        return false;
-    }
-
     public boolean containsElementAndPage(String element, int numero) {
         Node aux = head;
         while (aux != null) {
-            if ((aux.element.equalsIgnoreCase(element))
-                    && (aux.page.numeroDaPagina == numero)) {
-                return (true);
+            if ((aux.element.equalsIgnoreCase(element))) {
+                for (int j = 0; j < aux.paginas.size(); j++) {
+                    if (aux.paginas.get(j).numeroDaPagina == numero) {
+                        System.out.println("Existe a página " + numero 
+                                + " para a palavra '" + aux.element + "'.");
+                        return (true);
+                    }
+                }
             }
             aux = aux.next;
         }
@@ -277,15 +281,24 @@ public class LinkedListOfString {
             s.append("Palavra: ");
             s.append(aux.element);
             s.append("\n");
-            s.append("Número da Página: ");
-            s.append(aux.page.numeroDaPagina);
-            s.append("\n");
-            s.append("Ocorrencias na Página: ");
-            s.append(aux.page.occorenciasNaPagina);
+            s.append("Páginas (Número da página, Ocorrências na Página): { ");
+            s.append("( ");
+            s.append(aux.paginas.get(0).numeroDaPagina);
+            s.append(" , ");
+            s.append(aux.paginas.get(0).occorenciasNaPagina);
+            s.append(" )");
+            for (int i = 1; i < aux.paginas.size(); i++) {
+                s.append(" , ");
+                s.append("( ");
+                s.append(aux.paginas.get(i).numeroDaPagina);
+                s.append(" , ");
+                s.append(aux.paginas.get(i).occorenciasNaPagina);
+                s.append(" )");
+            }
+            s.append(" }");
             s.append("\n");
             aux = aux.next;
         }
-
         return s.toString();
     }
 }

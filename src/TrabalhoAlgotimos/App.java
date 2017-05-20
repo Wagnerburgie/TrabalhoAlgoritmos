@@ -34,7 +34,7 @@ public class App {
                 // Pega toda a linha numa String e passa para a próxima linha.
                 String linha = arquivo.readLine();
                 // Adiciona a linha dentro da lista.
-                lista.add(linha, contadorPagina, 0);
+                lista.add(linha, contadorPagina);
                 // Aumenta o contador da linha.
                 contadorLinha++;
             }
@@ -77,7 +77,6 @@ public class App {
                 if (contadorLinha > 40) {
                     contadorPagina++;
                     contadorLinha = 1;
-                    ocorrencias = 0;
                 }
                 // Transforma a linha num array de Strings.
                 linha = arquivo.readLine().split(" |\\-");
@@ -92,13 +91,12 @@ public class App {
                             && !palavra.equals("")) {
                         // Caso a palavra não esteja na stopWords,
                         // ela será adicionada a lista alice.
-                        if (!alice.containsElementAndPage(palavra, contadorPagina)) {                            
-                            ocorrencias = alice.getOccurrences(palavra);                            
+                        if (!alice.containsElement(palavra)) {                            
+                            ocorrencias = alice.getOccurrences(palavra, contadorPagina);                            
                             ocorrencias++;       
-                            alice.add(palavra, contadorPagina, ocorrencias);
-                            alice.changeOccurrences(palavra, contadorPagina, ocorrencias);
-                        } else if (alice.containsElementAndPage(palavra, contadorPagina)) {
-                            ocorrencias = alice.getOccurrences(palavra);
+                            alice.add(palavra, contadorPagina);
+                        } else {
+                            ocorrencias = alice.getOccurrences(palavra, contadorPagina);
                             ocorrencias++;
                             alice.changeOccurrences(palavra, contadorPagina, ocorrencias);
                         }
