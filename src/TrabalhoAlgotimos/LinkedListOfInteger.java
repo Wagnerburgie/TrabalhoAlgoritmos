@@ -284,17 +284,18 @@ public class LinkedListOfInteger {
         return s.toString();
     }
     //Metodo para aumentar Ocorrencias
-    public void aumentaOcorrencia(int numeroP) {
+    public boolean aumentaOcorrencia(int numeroP) {
         Node aux = head;
         for (int i = 0; i < count; i++) { //1
             if (aux.nroPagina == numeroP) {
                 aux.ocorrencia = aux.ocorrencia + 1;
-                return;
+                return true;
             }
             aux = aux.next;
         }
+       return false;
     }
-
+   //Para pegar as ocorrencias
    public int getOcorrencia(int index){
    if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
