@@ -278,8 +278,11 @@ public class LinkedListOfInteger {
         while (aux != null) {
             s.append("(");
             s.append(aux.nroPagina);
-            s.append(", ");
+            s.append(" , ");
             s.append(aux.ocorrencia + ")");
+            if(!aux.equals(tail)){
+                s.append(" , ");
+            }
             aux = aux.next;
         }
 

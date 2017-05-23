@@ -258,10 +258,9 @@ public class LinkedListOfString {
             s.append("Palavra: ");
             s.append(aux.element);
             s.append("\n");
-            s.append("Páginas (Número da página, Ocorrências na Página): { ");
-            s.append("( ");
+            s.append("Páginas (Número da página , Ocorrências na Página): { ");
             s.append(aux.paginas);
-            s.append(" )");
+            s.append(" }");
             s.append("\n");
             aux = aux.next;
         }
