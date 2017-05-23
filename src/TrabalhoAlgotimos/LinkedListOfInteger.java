@@ -100,7 +100,7 @@ public class LinkedListOfInteger {
         }
         return (aux.nroPagina);
     }
-
+    
     /**
      * Substitui o elemento armanzenado em uma determinada posicao da lista pelo
      * elemento indicado
@@ -283,7 +283,7 @@ public class LinkedListOfInteger {
 
         return s.toString();
     }
-
+    //Metodo para aumentar Ocorrencias
     public void aumentaOcorrencia(int numeroP) {
         Node aux = head;
         for (int i = 0; i < count; i++) { //1
@@ -295,25 +295,18 @@ public class LinkedListOfInteger {
         }
     }
 
-    // Implementação de aluno
-    public void reverse() {
-
-        if (count <= 1) {
-            return;
+   public int getOcorrencia(int index){
+   if ((index < 0) || (index >= count)) {
+            throw new IndexOutOfBoundsException();
         }
-
-        tail = head;
-        Node prev = null;
-        Node tracker = head.next;
-
-        while (prev != head) {
-            head.next = prev;
-            prev = head;
-            if (tracker != null) {
-                head = tracker;
-                tracker = tracker.next;
-            }
+        Node aux = head;
+        int c = 0;
+        while (c < index) {
+            aux = aux.next;
+            c++;
         }
-    }
+        return (aux.ocorrencia);
+   }
+   
 
 }
