@@ -1,17 +1,17 @@
 package TrabalhoAlgotimos;
 
-
 public class LinkedListOfInteger {
 
     // Classe interna Node
     private class Node {
+
         public Integer ocorrencia;
-        public Integer pagina;
+        public Integer nroPagina;
         public Node next;
 
         public Node(Integer element) {
             ocorrencia = 1;
-            this.pagina = element;
+            this.nroPagina = element;
             next = null;
         }
     }
@@ -88,7 +88,7 @@ public class LinkedListOfInteger {
      * @return o elemento da posicao especificada
      * @throws IndexOutOfBoundsException se (index < 0 || index >= size())
      */
-    public Integer get(int index) {
+    public Integer getNroPagina(int index) {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
@@ -98,7 +98,7 @@ public class LinkedListOfInteger {
             aux = aux.next;
             c++;
         }
-        return (aux.pagina);
+        return (aux.nroPagina);
     }
 
     /**
@@ -118,8 +118,8 @@ public class LinkedListOfInteger {
         for (int i = 0; i < index; i++) {
             aux = aux.next;
         }
-        Integer tmp = aux.pagina;
-        aux.pagina = element;
+        Integer tmp = aux.nroPagina;
+        aux.nroPagina = element;
         return tmp;
 
     }
@@ -138,7 +138,7 @@ public class LinkedListOfInteger {
             return false;
         }
 
-        if (head.pagina.equals(element)) { // remocao do primeiro
+        if (head.nroPagina.equals(element)) { // remocao do primeiro
             head = head.next;
             if (count == 1) { // se havia so um elemento na lista
                 tail = null;
@@ -151,7 +151,7 @@ public class LinkedListOfInteger {
         Node aux = head.next;
 
         for (int i = 1; i < count; i++) {
-            if (aux.pagina.equals(element)) {
+            if (aux.nroPagina.equals(element)) {
                 if (aux == tail) { // remocao do ultimo
                     tail = ant;
                     tail.next = null;
@@ -215,14 +215,14 @@ public class LinkedListOfInteger {
             }
             head = head.next;
             count--;
-            return aux.pagina;
+            return aux.nroPagina;
         }
         int c = 0;
         while (c < index - 1) {
             aux = aux.next;
             c++;
         }
-        Integer element = aux.next.pagina;
+        Integer element = aux.next.nroPagina;
         if (tail == aux.next) {
             tail = aux;
         }
@@ -243,7 +243,7 @@ public class LinkedListOfInteger {
         int index = 0;
         Node aux = head;
         while (aux != null) {
-            if (aux.pagina.equals(element)) {
+            if (aux.nroPagina.equals(element)) {
                 return (index);
             }
             aux = aux.next;
@@ -261,7 +261,7 @@ public class LinkedListOfInteger {
     public boolean contains(Integer element) {
         Node aux = head;
         while (aux != null) {
-            if (aux.pagina.equals(element)) {
+            if (aux.nroPagina.equals(element)) {
                 return (true);
             }
             aux = aux.next;
@@ -276,25 +276,36 @@ public class LinkedListOfInteger {
         Node aux = head;
 
         while (aux != null) {
-            s.append(aux.pagina.toString());
+            s.append(aux.nroPagina.toString());
             s.append("\n");
             aux = aux.next;
         }
 
         return s.toString();
     }
-    
+
+    public void aumentaOcorrencia(int numeroP) {
+        Node aux = head;
+        for (int i = 0; i < count; i++) { //1
+            if (aux.nroPagina == numeroP) {
+                aux.ocorrencia = aux.ocorrencia + 1;
+                return;
+            }
+            aux = aux.next;
+        }
+    }
+
     // Implementação de aluno
-    public void reverse () {
-        
+    public void reverse() {
+
         if (count <= 1) {
             return;
         }
-        
+
         tail = head;
         Node prev = null;
         Node tracker = head.next;
-        
+
         while (prev != head) {
             head.next = prev;
             prev = head;
