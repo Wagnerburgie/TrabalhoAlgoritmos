@@ -3,34 +3,17 @@ package TrabalhoAlgotimos;
 import java.util.ArrayList;
 
 public class LinkedListOfString {
-
-    // Classe Page (página).
-    public class Page {
-
-        // Número da página.
-        public int numeroDaPagina;
-        // Ocorrências de uma palavra na página.
-        public int occorenciasNaPagina;
-
-        public Page() {
-        }
-
-        public Page(int numero, int ocorrencias) {
-            this.numeroDaPagina = numero;
-            this.occorenciasNaPagina = ocorrencias;
-        }
-    }
-
+    
     private class Node {
 
         public String element;
         public Node next;
-        private ArrayList<Page> paginas;
+        private LinkedListOfInteger paginas;
 
         public Node(String element) {
             this.element = element;
             next = null;
-            paginas = new ArrayList<>();
+            paginas = new LinkedListOfInteger();
         }
     }
 
@@ -46,7 +29,7 @@ public class LinkedListOfString {
 
     public void add(String element, int numeroPagina) {
         Node novo = new Node(element);
-        novo.paginas.add(new Page(numeroPagina, 1));        
+        novo.paginas.add(numeroPagina, 1);        
         if (head == null) {
             head = novo;
         } else {
