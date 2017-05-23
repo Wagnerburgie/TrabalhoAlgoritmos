@@ -276,8 +276,10 @@ public class LinkedListOfInteger {
         Node aux = head;
 
         while (aux != null) {
-            s.append(aux.nroPagina.toString());
-            s.append("\n");
+            s.append("(");
+            s.append(aux.nroPagina);
+            s.append(", ");
+            s.append(aux.ocorrencia + ")");
             aux = aux.next;
         }
 
