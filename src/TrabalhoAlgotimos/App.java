@@ -1,24 +1,39 @@
 package TrabalhoAlgotimos;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.Node;
 
 public class App {
 
     public static void main(String[] args) {
-        LinkedListOfString alice = criaListaSemAsStopWords();
         Scanner in = new Scanner(System.in);
-        int menu = in.nextInt();
-
+        String texto = in.next();
+        LinkedListOfString alice = criaListaSemAsStopWords(texto);
+        int menu = 0;
         while (menu != 15) {
-            System.out.println();
+            menu = in.nextInt();
+            System.out.println("Menu \n1: Indice remessivo em ordem alfabetica\n"
+                    + "2: Exibir o percentual de stopWords\n"
+                    + "3: Encontrar a palavra mais frequente\n"
+                    + "4: Digite a palavra\n"
+                    + "5: Encontre a pagina com mais palavras");
+            switch (menu) {
+                case 1:
+                    break;
 
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+
+            }
         }
     }
 
@@ -63,8 +78,9 @@ public class App {
         return null;
     }
 
-    public static LinkedListOfString criaListaSemAsStopWords() {
+    public static LinkedListOfString criaListaSemAsStopWords(String texto) {
         try {
+
             // Pega a lista com as palavras que não
             // devem conter no arquivo alice.txt.
             LinkedListOfString stopWords = addStopWords();
@@ -73,7 +89,7 @@ public class App {
             LinkedListOfString alice = new LinkedListOfString();
             // Pega o arquivo alice.txt dentro do pacote documentos.
             BufferedReader arquivo
-                    = new BufferedReader(new FileReader("src/documentos/alice.txt"));
+                    = new BufferedReader(new FileReader(texto));
             // Cria o array que irá conter todas as palavras
             // de cada linha do arquivo alice.txt.
             String[] linha;
@@ -129,7 +145,7 @@ public class App {
         }
         return null;
     }
-    
+
     public static LinkedListOfString criaListaComAsStopWords() {
         try {
             // Pega a lista com as palavras que não
@@ -196,8 +212,7 @@ public class App {
         }
         return null;
     }
-    
-    
+
     // Método que remove caracteres desnecessários.
     public static String removeSomeCharacters(String palavra) {
         // Coloca a palavra recebida por parâmetro dentro de uma String
