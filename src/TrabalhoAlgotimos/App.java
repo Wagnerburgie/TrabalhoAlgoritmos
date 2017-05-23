@@ -11,6 +11,17 @@ import javafx.scene.Node;
 
 public class App {
 
+    public static void main(String[] args) {
+        LinkedListOfString alice = criaListaSemAsStopWords();
+        Scanner in = new Scanner(System.in);
+        int menu = in.nextInt();
+
+        while (menu != 15) {
+            System.out.println();
+
+        }
+    }
+
     public static LinkedListOfString addStopWords() {
         try {
             // Cria uma lista encadeada.
@@ -52,7 +63,7 @@ public class App {
         return null;
     }
 
-    public static LinkedListOfString criaLista() {
+    public static LinkedListOfString criaListaSemAsStopWords() {
         try {
             // Pega a lista com as palavras que não
             // devem conter no arquivo alice.txt.
@@ -118,19 +129,76 @@ public class App {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        LinkedListOfString alice = criaLista();
-        Scanner in = new Scanner(System.in);
-        int menu = in.nextInt();
-
-        while (menu != 15) {
-        System.out.println();
-              
-            
+    
+    public static LinkedListOfString criaListaComAsStopWords() {
+        try {
+            // Pega a lista com as palavras que não
+            // devem conter no arquivo alice.txt.
+            LinkedListOfString stopWords = addStopWords();
+            // Cria a lista que irá conter todas as palavras do arquivo
+            // alice.txt que não estão presentes na lista stopWords.
+            LinkedListOfString alice = new LinkedListOfString();
+            // Pega o arquivo alice.txt dentro do pacote documentos.
+            BufferedReader arquivo
+                    = new BufferedReader(new FileReader("src/documentos/alice.txt"));
+            // Cria o array que irá conter todas as palavras
+            // de cada linha do arquivo alice.txt.
+            String[] linha;
+            // Criando contador para indicar a linha.
+            int contadorLinha = 1;
+            // Criando contador para indicar a página.
+            int contadorPagina = 1;
+            // Criando ocorrencias dentro de uma página.
+            int ocorrencias = 0;
+            // Vai testando se tem linha no arquivo dentro de um while.
+            while (arquivo.ready()) {
+                // Muda de página a cada 40 linhas.
+                if (contadorLinha > 40) {
+                    contadorPagina++;
+                    contadorLinha = 1;
+                }
+                // Transforma a linha num array de Strings.
+                linha = arquivo.readLine().split(" |\\-");
+                // Cria um for pra percorrer as Strings da linha.
+                for (int i = 0; i < linha.length; i++) {
+                    // Pega somente os caracteres necessários
+                    // de cada String da linha.
+                    String palavra = removeSomeCharacters(linha[i]);
+                    // Testa se a palavra não está presente
+                    // dentro da lista stopWords
+                    if (!stopWords.containsElement(palavra)
+                            && !palavra.equals("")) {
+                        // Caso a palavra não esteja na stopWords,
+                        // ela será adicionada a lista alice.
+                        if (!alice.containsElement(palavra)) {
+                            ocorrencias = alice.getOccurrences(palavra, contadorPagina);
+                            ocorrencias++;
+                            alice.add(palavra, contadorPagina);
+                        } else {
+                            ocorrencias = alice.getOccurrences(palavra, contadorPagina);
+                            ocorrencias++;
+                            alice.changeOccurrences(palavra, contadorPagina, ocorrencias);
+                        }
+                    }
+                }
+                // Aumenta contador.
+                contadorLinha++;
             }
+            // Fecha o arquivo.
+            arquivo.close();
+            // Imprime a lista alice.
+            System.out.println(alice.toString());
+            // Captura uma excessão caso houver.
+            return alice;
+        } catch (Exception e) {
+            // Imprime o erro da excessão.
+            System.out.println("Erro: " + e.getMessage());
         }
-        // Método que remove caracteres desnecessários.
+        return null;
+    }
+    
+    
+    // Método que remove caracteres desnecessários.
     public static String removeSomeCharacters(String palavra) {
         // Coloca a palavra recebida por parâmetro dentro de uma String
         // com todos os caracteres desnecessários removidos.
