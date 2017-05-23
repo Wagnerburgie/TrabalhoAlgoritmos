@@ -81,11 +81,11 @@ public class LinkedListOfString {
 
     public int getOccurrences(String element, int numeroDaPagina) {
         Node aux = head;
-        for (int i = 1; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             if (aux.element.equalsIgnoreCase(element)) {
                 for (int j = 0; j < aux.paginas.size(); j++) {
-                    if (aux.paginas.get(j).numeroDaPagina == numeroDaPagina) {
-                        return aux.paginas.get(j).occorenciasNaPagina;
+                    if (aux.paginas.getNroPagina(j) == numeroDaPagina) {
+                        return aux.paginas.getOcorrencia(j);
                     }
                 }
             }
@@ -97,20 +97,14 @@ public class LinkedListOfString {
     public void changeOccurrences(String palavra, int numero, int ocorrencias) {
         Node aux = head;
         // Percorre a lista de palavras.
-        for (int i = 1; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             // Testa se a palavra e o número da página
             // são os mesmos dos parâmetros.
             if (aux.element.equalsIgnoreCase(palavra)) {
-                for (int j = 0; j < aux.paginas.size(); j++) {
-                    if (aux.paginas.get(j).numeroDaPagina == numero) {
-                        // Altera a ocorrência da palavra na página.
-                        aux.paginas.get(j).occorenciasNaPagina = ocorrencias;
-                        // Finaliza o método por não precisar 
-                        // continuar depois da alteração.
-                        return;
-                    }
+                if(aux.paginas.aumentaOcorrencia(numero)){
+                    return;
                 }
-                aux.paginas.add(new Page(numero, ocorrencias));
+                aux.paginas.add(numero, ocorrencias);
                 return;
             }
             aux = aux.next;
