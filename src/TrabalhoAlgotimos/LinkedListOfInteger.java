@@ -293,7 +293,7 @@ public class LinkedListOfInteger {
         Node aux = head;
         for (int i = 0; i < count; i++) { //1
             if (aux.nroPagina == numeroP) {
-                aux.ocorrencia = aux.ocorrencia + 1;
+                aux.ocorrencia++;
                 return true;
             }
             aux = aux.next;
