@@ -98,7 +98,7 @@ public class LinkedListOfString {
 
     public int getOccurrences(String element, int numeroDaPagina) {
         Node aux = head;
-        for (int i = 1; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             if (aux.element.equalsIgnoreCase(element)) {
                 for (int j = 0; j < aux.paginas.size(); j++) {
                     if (aux.paginas.get(j).numeroDaPagina == numeroDaPagina) {
