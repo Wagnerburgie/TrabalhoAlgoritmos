@@ -9,9 +9,11 @@ public class LinkedListOfString {
         public String element;
         public Node next;
         private LinkedListOfInteger paginas;
-
+        public int totalOcorrencias;
+        
         public Node(String element) {
             this.element = element;
+            totalOcorrencias = 1;
             next = null;
             paginas = new LinkedListOfInteger();
         }
@@ -29,7 +31,7 @@ public class LinkedListOfString {
 
     public void add(String element, int numeroPagina) {
         Node novo = new Node(element);
-        novo.paginas.add(numeroPagina);        
+        novo.paginas.add(numeroPagina);       
         if (head == null) {
             head = novo;
         } else {
@@ -102,8 +104,10 @@ public class LinkedListOfString {
             // são os mesmos dos parâmetros.
             if (aux.element.equalsIgnoreCase(palavra)) {
                 if(aux.paginas.aumentaOcorrencia(numero)){
+                    aux.totalOcorrencias++;
                     return;
                 }
+                aux.totalOcorrencias++;
                 aux.paginas.add(numero);
                 return;
             }
@@ -261,6 +265,8 @@ public class LinkedListOfString {
             s.append("Páginas (Número da página , Ocorrências na Página): { ");
             s.append(aux.paginas);
             s.append(" }");
+            s.append("\n");
+            s.append("Total de ocorrências da palavra: " + aux.totalOcorrencias);
             s.append("\n");
             aux = aux.next;
         }
