@@ -88,7 +88,7 @@ public class LinkedListOfInteger {
      * @return o elemento da posicao especificada
      * @throws IndexOutOfBoundsException se (index < 0 || index >= size())
      */
-    public Integer get(int index) {
+    public Integer getNroPagina(int index) {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
