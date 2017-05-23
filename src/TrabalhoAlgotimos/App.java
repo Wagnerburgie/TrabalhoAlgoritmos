@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Node;
@@ -51,7 +52,7 @@ public class App {
         return null;
     }
 
-    public static void main(String[] args) {
+    public static LinkedListOfString criaLista() {
         try {
             // Pega a lista com as palavras que não
             // devem conter no arquivo alice.txt.
@@ -91,9 +92,9 @@ public class App {
                             && !palavra.equals("")) {
                         // Caso a palavra não esteja na stopWords,
                         // ela será adicionada a lista alice.
-                        if (!alice.containsElement(palavra)) {                            
-                            ocorrencias = alice.getOccurrences(palavra, contadorPagina);                            
-                            ocorrencias++;       
+                        if (!alice.containsElement(palavra)) {
+                            ocorrencias = alice.getOccurrences(palavra, contadorPagina);
+                            ocorrencias++;
                             alice.add(palavra, contadorPagina);
                         } else {
                             ocorrencias = alice.getOccurrences(palavra, contadorPagina);
@@ -110,13 +111,26 @@ public class App {
             // Imprime a lista alice.
             System.out.println(alice.toString());
             // Captura uma excessão caso houver.
+            return alice;
         } catch (Exception e) {
             // Imprime o erro da excessão.
             System.out.println("Erro: " + e.getMessage());
         }
+        return null;
     }
 
-    // Método que remove caracteres desnecessários.
+    public static void main(String[] args) {
+        LinkedListOfString alice = criaLista();
+        Scanner in = new Scanner(System.in);
+        int menu = in.nextInt();
+
+        while (menu != 15) {
+        System.out.println();
+              
+            
+            }
+        }
+        // Método que remove caracteres desnecessários.
     public static String removeSomeCharacters(String palavra) {
         // Coloca a palavra recebida por parâmetro dentro de uma String
         // com todos os caracteres desnecessários removidos.
