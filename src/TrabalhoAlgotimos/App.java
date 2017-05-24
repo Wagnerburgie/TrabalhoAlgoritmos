@@ -9,34 +9,48 @@ public class App {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String texto = in.next();
-        LinkedListOfString alice = criaListaSemAsStopWords(texto);
+        LinkedListOfString listaSemStopWords = criaListaSemAsStopWords(texto);
+        LinkedListOfString listaComStopWords = criaListaComAsStopWords(texto);
         int menu = 0;
-        while (menu != 15) {
+        while (menu != 6) {
+            System.out.println("Menu\n\nDigite:\n1) Exibir todo o índice "
+                    + "remessivo em ordem alfabética\n"
+                    + "2) Exibir o percentual de stopwords do texto\n"
+                    + "3) Encontrar a palavra mais frequente "
+                    + "(com maior número de ocorrências)\n"
+                    + "4) Pesquisar palavra\n"
+                    + "5) Encontrar página complexa "
+                    + "(que contém o maior número de palavras indexadas)\n"
+                    + "6) Sair do menu\n");
             menu = in.nextInt();
-            System.out.println("Menu \n1: Indice remessivo em ordem alfabetica\n"
-                    + "2: Exibir o percentual de stopWords\n"
-                    + "3: Encontrar a palavra mais frequente\n"
-                    + "4: Digite a palavra\n"
-                    + "5: Encontre a pagina com mais palavras");
             switch (menu) {
                 case 1:
+                    exibirTodoIndiceRemissivoEmOrdemAlfabetica(listaSemStopWords);
                     break;
-
                 case 2:
+                    exibirPercentualDeStopWords(listaComStopWords, listaSemStopWords);
                     break;
                 case 3:
+                    encontrarPalavraMaisFrequente(listaSemStopWords);
                     break;
                 case 4:
+                    pesquisarPalavra(listaSemStopWords);
                     break;
                 case 5:
+                    encontrarPaginaComplexa(listaSemStopWords);
+                    break;
+                case 6:
+                    System.exit(0);
                     break;
                 default:
+                    System.out.println("Digite apenas as opções "
+                            + "que aparecem no menu.");
                     break;
-
             }
         }
     }
-
+    
+    // Criando uma lista de stopwords.
     public static LinkedListOfString addStopWords() {
         try {
             // Cria uma lista encadeada.
@@ -77,7 +91,8 @@ public class App {
         }
         return null;
     }
-
+    
+    // Lista sem as stopwords.
     public static LinkedListOfString criaListaSemAsStopWords(String texto) {
         try {
 
@@ -117,7 +132,8 @@ public class App {
                     // dentro da lista stopWords
                     if (!stopWords.containsElement(palavra)
                             && !palavra.equals("")) {
-                        // Caso a palavra não esteja na stopWords,
+                        // Caso a palavra não esteja na stopWords e 
+                        // ainda não foi adicionada na lista,
                         // ela será adicionada a lista alice.
                         if (!alice.containsElement(palavra)) {
                             ocorrencias = alice.getOccurrences(palavra, contadorPagina);
@@ -145,8 +161,9 @@ public class App {
         }
         return null;
     }
-
-    public static LinkedListOfString criaListaComAsStopWords() {
+    
+    // Lista com as stopwords.
+    public static LinkedListOfString criaListaComAsStopWords(String texto) {
         try {
             // Pega a lista com as palavras que não
             // devem conter no arquivo alice.txt.
@@ -156,7 +173,7 @@ public class App {
             LinkedListOfString alice = new LinkedListOfString();
             // Pega o arquivo alice.txt dentro do pacote documentos.
             BufferedReader arquivo
-                    = new BufferedReader(new FileReader("src/documentos/alice.txt"));
+                    = new BufferedReader(new FileReader(texto));
             // Cria o array que irá conter todas as palavras
             // de cada linha do arquivo alice.txt.
             String[] linha;
@@ -180,11 +197,12 @@ public class App {
                     // Pega somente os caracteres necessários
                     // de cada String da linha.
                     String palavra = removeSomeCharacters(linha[i]);
-                    // Testa se a palavra não está presente
+                    // Testa se a palavra está presente
                     // dentro da lista stopWords
-                    if (!stopWords.containsElement(palavra)
+                    if (stopWords.containsElement(palavra)
                             && !palavra.equals("")) {
-                        // Caso a palavra não esteja na stopWords,
+                        // Caso a palavra esteja na stopWords e 
+                        // ainda não foi adicionada na lista,
                         // ela será adicionada a lista alice.
                         if (!alice.containsElement(palavra)) {
                             ocorrencias = alice.getOccurrences(palavra, contadorPagina);
@@ -233,5 +251,29 @@ public class App {
                 replace("\"", "").replace(" ", "").replace("\n", "");
         // Retorna o resultado.
         return resultado;
+    }
+
+    // Métodos sobre as questões propostas no trabalho.
+    
+    private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfString listaSemStopWords) {
+    }
+
+    private static void exibirPercentualDeStopWords(LinkedListOfString listaComStopWords, LinkedListOfString listaSemStopWords) {
+        int totalOcorrenciasComStopWords = listaComStopWords.getTotalDeTodasAsOcorrencias();
+        int totalOcorrenciasSemStopWords = listaSemStopWords.getTotalDeTodasAsOcorrencias();
+        int totalOcorrenciasDePalavrasNoTexto = 
+                totalOcorrenciasComStopWords + totalOcorrenciasSemStopWords;
+        int resultado = (totalOcorrenciasComStopWords*100)/totalOcorrenciasDePalavrasNoTexto;
+        System.out.println("Porcentagem: " + resultado + "%");
+    }
+
+    private static void encontrarPalavraMaisFrequente(LinkedListOfString listaSemStopWords) {
+        System.out.println("Palavra: " + listaSemStopWords.getPalavraMaisFrequente());
+    }
+
+    private static void pesquisarPalavra(LinkedListOfString listaSemStopWords) {
+    }
+
+    private static void encontrarPaginaComplexa(LinkedListOfString listaSemStopWords) {
     }
 }

@@ -1,6 +1,5 @@
 package TrabalhoAlgotimos;
 
-import java.util.ArrayList;
 
 public class LinkedListOfString {
     
@@ -250,7 +249,30 @@ public class LinkedListOfString {
         }
         return false;
     }
-
+    
+    public String getPalavraMaisFrequente(){
+        Node aux = head;
+        int total = 0;
+        String palavra = "";
+        while(aux != null){
+            if(aux.totalOcorrencias > total){
+                total = aux.totalOcorrencias;
+                palavra = aux.element;
+            }
+        }
+        return palavra;
+    }
+    
+    public int getTotalDeTodasAsOcorrencias(){
+        Node aux = head;
+        int total = 0;
+        while(aux != null){
+            total = total + aux.totalOcorrencias;
+            aux = aux.next;
+        }
+        return total;
+    }
+    
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
