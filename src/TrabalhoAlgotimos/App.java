@@ -9,8 +9,8 @@ public class App {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String texto = in.next();
-        LinkedListOfString listaSemStopWords = criaListaSemAsStopWords(texto);
-        LinkedListOfString listaComStopWords = criaListaComAsStopWords(texto);
+        LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(texto);
+        LinkedListOfWord listaComStopWords = criaListaComAsStopWords(texto);
         int menu = 0;
         while (menu != 6) {
             System.out.println("Menu\n\nDigite:\n1) Exibir todo o índice "
@@ -51,10 +51,10 @@ public class App {
     }
     
     // Criando uma lista de stopwords.
-    public static LinkedListOfString addStopWords() {
+    public static LinkedListOfWord addStopWords() {
         try {
             // Cria uma lista encadeada.
-            LinkedListOfString lista = new LinkedListOfString();
+            LinkedListOfWord lista = new LinkedListOfWord();
             // Pega o arquivo stopwords.txt dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader("src/documentos/stopwords.txt"));
@@ -93,15 +93,15 @@ public class App {
     }
     
     // Lista sem as stopwords.
-    public static LinkedListOfString criaListaSemAsStopWords(String texto) {
+    public static LinkedListOfWord criaListaSemAsStopWords(String texto) {
         try {
 
             // Pega a lista com as palavras que não
             // devem conter no arquivo alice.txt.
-            LinkedListOfString stopWords = addStopWords();
+            LinkedListOfWord stopWords = addStopWords();
             // Cria a lista que irá conter todas as palavras do arquivo
             // alice.txt que não estão presentes na lista stopWords.
-            LinkedListOfString alice = new LinkedListOfString();
+            LinkedListOfWord alice = new LinkedListOfWord();
             // Pega o arquivo alice.txt dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader(texto));
@@ -163,14 +163,14 @@ public class App {
     }
     
     // Lista com as stopwords.
-    public static LinkedListOfString criaListaComAsStopWords(String texto) {
+    public static LinkedListOfWord criaListaComAsStopWords(String texto) {
         try {
             // Pega a lista com as palavras que não
             // devem conter no arquivo alice.txt.
-            LinkedListOfString stopWords = addStopWords();
+            LinkedListOfWord stopWords = addStopWords();
             // Cria a lista que irá conter todas as palavras do arquivo
             // alice.txt que não estão presentes na lista stopWords.
-            LinkedListOfString alice = new LinkedListOfString();
+            LinkedListOfWord alice = new LinkedListOfWord();
             // Pega o arquivo alice.txt dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader(texto));
@@ -255,10 +255,10 @@ public class App {
 
     // Métodos sobre as questões propostas no trabalho.
     
-    private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfString listaSemStopWords) {
+    private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfWord listaSemStopWords) {
     }
 
-    private static void exibirPercentualDeStopWords(LinkedListOfString listaComStopWords, LinkedListOfString listaSemStopWords) {
+    private static void exibirPercentualDeStopWords(LinkedListOfWord listaComStopWords, LinkedListOfWord listaSemStopWords) {
         int totalOcorrenciasComStopWords = listaComStopWords.getTotalDeTodasAsOcorrencias();
         int totalOcorrenciasSemStopWords = listaSemStopWords.getTotalDeTodasAsOcorrencias();
         int totalOcorrenciasDePalavrasNoTexto = 
@@ -267,13 +267,13 @@ public class App {
         System.out.println("Porcentagem: " + resultado + "%");
     }
 
-    private static void encontrarPalavraMaisFrequente(LinkedListOfString listaSemStopWords) {
+    private static void encontrarPalavraMaisFrequente(LinkedListOfWord listaSemStopWords) {
         System.out.println("Palavra: " + listaSemStopWords.getPalavraMaisFrequente());
     }
 
-    private static void pesquisarPalavra(LinkedListOfString listaSemStopWords) {
+    private static void pesquisarPalavra(LinkedListOfWord listaSemStopWords) {
     }
 
-    private static void encontrarPaginaComplexa(LinkedListOfString listaSemStopWords) {
+    private static void encontrarPaginaComplexa(LinkedListOfWord listaSemStopWords) {
     }
 }

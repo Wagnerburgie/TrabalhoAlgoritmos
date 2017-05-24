@@ -1,6 +1,6 @@
 package TrabalhoAlgotimos;
 
-public class LinkedListOfInteger {
+public class LinkedListOfPage {
 
     // Classe interna Node
     private class Node {
@@ -26,7 +26,7 @@ public class LinkedListOfInteger {
     /**
      * Construtor da lista
      */
-    public LinkedListOfInteger() {
+    public LinkedListOfPage() {
         head = null;
         tail = null;
         count = 0;
