@@ -9,8 +9,9 @@ public class App {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String texto = in.next();
-        LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(texto);
-        LinkedListOfWord listaComStopWords = criaListaComAsStopWords(texto);
+        String nome = ("src/documentos/stopwords.txt");
+        LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(nome);
+        LinkedListOfWord listaComStopWords = criaListaComAsStopWords(nome);
         int menu = 0;
         while (menu != 6) {
             System.out.println("Menu\n\nDigite:\n1) Exibir todo o índice "
@@ -256,6 +257,7 @@ public class App {
     // Métodos sobre as questões propostas no trabalho.
     
     private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfWord listaSemStopWords) {
+    System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
     }
 
     private static void exibirPercentualDeStopWords(LinkedListOfWord listaComStopWords, LinkedListOfWord listaSemStopWords) {

@@ -1,7 +1,7 @@
 package TrabalhoAlgotimos;
 
 public class LinkedListOfWord {
-  
+
     private class Node {
 
         public String element;
@@ -26,7 +26,7 @@ public class LinkedListOfWord {
         tail = null;
         count = 0;
     }
-    
+
     public void add(Node nodo) {
         Node novo = nodo;
         if (head == null) {
@@ -37,7 +37,7 @@ public class LinkedListOfWord {
         tail = novo;
         count++;
     }
-    
+
     public void add(String element, int numeroPagina) {
         Node novo = new Node(element);
         novo.paginas.add(numeroPagina);
@@ -272,7 +272,7 @@ public class LinkedListOfWord {
         }
         return palavra;
     }
-    
+
     public Node getNodo(String palavra) {
         Node aux = head;
         while (aux != null && !aux.element.equalsIgnoreCase(palavra)) {
@@ -280,9 +280,9 @@ public class LinkedListOfWord {
         }
         return aux;
     }
-    
+
     public Node getNodo(int indice) {
-        if(indice < 0 || indice > count){
+        if (indice < 0 || indice > count) {
             return null;
         }
         Node aux = head;
@@ -293,7 +293,7 @@ public class LinkedListOfWord {
         }
         return aux;
     }
-    
+
     public int getTotalDeTodasAsOcorrencias() {
         Node aux = head;
         int total = 0;
@@ -322,45 +322,69 @@ public class LinkedListOfWord {
             head = proximo;
             tail = atual;
             return this;
-        } else if (count == 2 && atual.element.compareTo(proximo.element) <= 0){
+        } else if (count == 2 && atual.element.compareTo(proximo.element) <= 0) {
             return this;
         }
         return ordenaListaAuxiliar();
     }
-    
+
     private LinkedListOfWord ordenaListaAuxiliar() {
         String[] palavras = new String[count];
         Node nodo1 = head;
-        for(int i = 0; i < count; i ++){
+        for (int i = 0; i < count; i++) {
             palavras[i] = nodo1.element;
             nodo1 = nodo1.next;
         }
         String aux = "";
-        for(int i = 0; i < count; i ++){
-            for(int j = 0; j < count; j++){
-                if(palavras[j].compareTo(palavras[j+1]) > 0){
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                if (palavras[j].compareTo(palavras[j + 1]) > 0) {
                     aux = palavras[j];
-                    palavras[j] = palavras[j+1];
-                    palavras[j+1] = aux;
+                    palavras[j] = palavras[j + 1];
+                    palavras[j + 1] = aux;
                 }
             }
         }
         LinkedListOfWord lista = new LinkedListOfWord();
-        for(int x = 0; x < count; x++){
+        for (int x = 0; x < count; x++) {
             Node nodo2 = getNodo(palavras[x]);
-            if(nodo2 != null){
+            if (nodo2 != null) {
                 lista.add(nodo2);
             }
         }
         head = null;
         tail = null;
         count = 0;
-        for(int y = 0; y < lista.size(); y++){
+        for (int y = 0; y < lista.size(); y++) {
             add(lista.getNodo(y));
         }
-        return this;        
+        return this;
     }
-    
+
+    public void mostraOrdenado() {
+        Node aux = head;
+        LinkedListOfWord lista = new LinkedListOfWord();
+        String maior = "";
+        String adiciona = "";
+        int gira = 0;
+        while (gira < count) {
+            aux = head;
+            for(int i = 0; i < count; i++){
+            adiciona = aux.element;
+            aux = aux.next;
+            if(lista.equals(adiciona)){
+            }
+            else{
+            if(adiciona.charAt(0) < aux.element.charAt(0)){
+            
+            }
+            }
+            }
+            gira++;
+        }
+
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
