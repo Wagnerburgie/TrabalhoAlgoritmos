@@ -2,7 +2,6 @@ package TrabalhoAlgotimos;
 
 import TrabalhoAlgotimos.LinkedListOfWord.Node;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class LinkedListOfWord {
@@ -33,13 +32,16 @@ public class LinkedListOfWord {
     }
 
     public void add(Node nodo) {
-        Node novo = nodo;
+        // Praticamente segue o padrão dos outros métodos add, 
+        // com excessão da última linha.
         if (head == null) {
-            head = novo;
+            head = nodo;
         } else {
-            tail.next = novo;
+            tail.next = nodo;
         }
-        tail = novo;
+        tail = nodo;
+        // Deixa o next null, já que o nodo pode vir com o next preenchido.
+        tail.next = null;
         count++;
     }
 
@@ -339,41 +341,17 @@ public class LinkedListOfWord {
 
     private LinkedListOfWord ordenaListaAuxiliar() {
         try {
-            ArrayList<Node> palavras = new ArrayList<>();
-            Node nodo1 = head;
-            for (int a = 1; a < count; a++) {
-                palavras.add(nodo1);
-                nodo1 = nodo1.next;
-            }
-            System.out.println("Passou pelo primeiro for.");
-            Comparator<Node> Comparator;
-            palavras.sort(Comparator = new Comparator() {
-                public int compareNode(Node o1, Node o2) {
-                    if (o1.element.compareTo(o2.element) < 0) {
-                        return -1;
-                    } else if (o1.element.compareTo(o2.element) > 0) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-                @Override
-                public int compare(Object o1, Object o2) {
-                    return compareNode((Node)o1, (Node)o2);
-                }
-            });
-            for(int b = 0; b < palavras.size(); b++){
-                System.out.println("Palavra: " + palavras.get(b).element);
-            }
-            System.out.println("Passou pela ordenação.");
-            System.out.println("Count: " + count);
-            head = null;
-            tail = null;
-            count = 0;
+            // Monta um ArrayList com os Nodos da LinkedListOfWord.
+            ArrayList<Node> palavras = montaArrayListComALinkedList();
+            // Ordena o ArrayList.
+            ArrayList<Node> arrayListOrdenado = ordenaArrayListDePalavras(palavras);
+            // Limpa a classe LinkedListOfWord.
+            clear();
+            // Adiciona os novos elementos já ordenados dentro da LinkedList.
             for (int x = 0; x < palavras.size(); x++) {
-                add(palavras.get(x));                
+                add(arrayListOrdenado.get(x));
             }
-            System.out.println("Passou pelo segundo for.");            
+            // Retorna a lista.
             return this;
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -381,36 +359,65 @@ public class LinkedListOfWord {
         return null;
     }
 
-    public void mostraOrdenado() {
-        Node aux = head;
-        LinkedListOfWord lista = new LinkedListOfWord();
-        String maior = "";
-        String adiciona = "";
-        int gira = 0;
-        while (gira < count) {
-            aux = head;
-            for (int i = 0; i < count; i++) {
-                adiciona = aux.element;
-                aux = aux.next;
-                if (lista.equals(adiciona)) {
-                } else {
-                    if (adiciona.charAt(0) < aux.element.charAt(0)) {
-
-                    }
-                }
-            }
-            gira++;
+    private ArrayList<Node> montaArrayListComALinkedList() {
+        ArrayList<Node> palavras = new ArrayList<>();
+        Node nodo = head;
+        for (int a = 1; a < count; a++) {
+            palavras.add(nodo);
+            nodo = nodo.next;
         }
-
+        return palavras;
     }
 
+    private ArrayList<Node> ordenaArrayListDePalavras(ArrayList<Node> palavras) {
+        Comparator<Node> Comparator;
+        palavras.sort(Comparator = new Comparator() {
+            public int compareNode(Node o1, Node o2) {
+                if (o1.element.compareTo(o2.element) < 0) {
+                    return -1;
+                } else if (o1.element.compareTo(o2.element) > 0) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            @Override
+            public int compare(Object o1, Object o2) {
+                return compareNode((Node) o1, (Node) o2);
+            }
+        });
+        return palavras;
+    }
+
+//    public void mostraOrdenado() {
+//        Node aux = head;
+//        LinkedListOfWord lista = new LinkedListOfWord();
+//        String maior = "";
+//        String adiciona = "";
+//        int gira = 0;
+//        while (gira < count) {
+//            aux = head;
+//            for (int i = 0; i < count; i++) {
+//                adiciona = aux.element;
+//                aux = aux.next;
+//                if (lista.equals(adiciona)) {
+//                } else {
+//                    if (adiciona.charAt(0) < aux.element.charAt(0)) {
+//
+//                    }
+//                }
+//            }
+//            gira++;
+//        }
+//
+//    }
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-
         Node aux = head;
-
-        while (aux != null) {
+        int contador = 0;
+        while (contador < count) {
+            System.out.println("Contador: " + contador);
             s.append("\n");
             s.append("Palavra: ");
             s.append(aux.element);
@@ -419,9 +426,11 @@ public class LinkedListOfWord {
             s.append(aux.paginas);
             s.append(" }");
             s.append("\n");
-            s.append("Total de ocorrências da palavra: " + aux.totalOcorrencias);
+            s.append("Total de ocorrências da palavra: ");
+            s.append(aux.totalOcorrencias);
             s.append("\n");
             aux = aux.next;
+            contador++;
         }
         return s.toString();
     }

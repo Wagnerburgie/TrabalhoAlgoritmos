@@ -10,7 +10,7 @@ public class App {
         Scanner in = new Scanner(System.in);
         //System.out.println("Digite o caminho do arquivo para ser lido: ");
         //String texto = in.next();
-        String nome = ("src/documentos/java.txt");
+        String nome = ("src/documentos/alice.txt");
         LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(nome);
         LinkedListOfWord listaComStopWords = criaListaComAsStopWords(nome);
         int menu = 0;
