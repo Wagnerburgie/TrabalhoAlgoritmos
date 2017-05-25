@@ -1,8 +1,11 @@
 package TrabalhoAlgotimos;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class LinkedListOfWord {
 
-    private class Node {
+    public class Node {
 
         public String element;
         public Node next;
@@ -48,14 +51,12 @@ public class LinkedListOfWord {
         }
         tail = novo;
         count++;
-
     }
 
     public void add(int index, String element) {
         if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException();
         }
-
         Node n = new Node(element);
         if (index == 0) { //insere no inicio
             n.next = head;
@@ -77,7 +78,7 @@ public class LinkedListOfWord {
         count++;
     }
 
-    public String get(int index) {
+    public Node get(int index) {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
@@ -87,7 +88,7 @@ public class LinkedListOfWord {
             aux = aux.next;
             c++;
         }
-        return (aux.element);
+        return (aux);
     }
 
     public int getOccurrences(String element, int numeroDaPagina) {
@@ -275,10 +276,17 @@ public class LinkedListOfWord {
 
     public Node getNodo(String palavra) {
         Node aux = head;
-        while (aux != null && !aux.element.equalsIgnoreCase(palavra)) {
+        System.out.println("Nodo no getNodo: " + aux.element);
+        System.out.println("Palavra no getNodo: " + palavra);
+        for (int i = 1; i < count; i++) {
+            System.out.println("Índice no getNodo: " + i);
+            if (aux.element.equalsIgnoreCase(palavra)) {
+                System.out.println("Entrou no if");
+                return aux;
+            }
             aux = aux.next;
         }
-        return aux;
+        return null;
     }
 
     public Node getNodo(int indice) {
@@ -325,40 +333,48 @@ public class LinkedListOfWord {
         } else if (count == 2 && atual.element.compareTo(proximo.element) <= 0) {
             return this;
         }
+        System.out.println("Chegou no return.");
         return ordenaListaAuxiliar();
     }
 
     private LinkedListOfWord ordenaListaAuxiliar() {
-        String[] palavras = new String[count];
-        Node nodo1 = head;
-        for (int i = 0; i < count; i++) {
-            palavras[i] = nodo1.element;
-            nodo1 = nodo1.next;
-        }
-        String aux = "";
-        for (int i = 0; i < count; i++) {
-            for (int j = 0; j < count; j++) {
-                if (palavras[j].compareTo(palavras[j + 1]) > 0) {
-                    aux = palavras[j];
-                    palavras[j] = palavras[j + 1];
-                    palavras[j + 1] = aux;
-                }
+        try {
+            ArrayList<String> palavras = new ArrayList<>();
+            Node nodo1 = head;
+            for (int a = 1; a < count; a++) {
+                palavras.add(nodo1.element);
+                nodo1 = nodo1.next;
             }
-        }
-        LinkedListOfWord lista = new LinkedListOfWord();
-        for (int x = 0; x < count; x++) {
-            Node nodo2 = getNodo(palavras[x]);
-            if (nodo2 != null) {
+            System.out.println("Passou pelo primeiro for.");
+            Collections.sort(palavras);
+            System.out.println("Passou pela ordenação.");            
+            LinkedListOfWord lista = new LinkedListOfWord();
+            System.out.println("Count: " + count);
+            for (int x = 0; x < palavras.size(); x++) {
+                String palavra = palavras.get(x);
+                System.out.println("Palavra no ordenar: " + palavra);
+                Node nodo2 = getNodo(palavra);
+                //int indice = indexOf(palavras.get(x));
+                //Node nodo2 = get(indice);
+                //System.out.println("Nodo: " + nodo2.element);
+                System.out.println("Nodo no ordenar: " + nodo2.element);
+                System.out.println("Índice no ordenar: " + x);
                 lista.add(nodo2);
             }
+            System.out.println("Passou pelo segundo for.");
+            head = null;
+            tail = null;
+            count = 0;
+            for (int y = 0; y < lista.size(); y++) {
+                add(lista.getNodo(y));
+            }
+            System.out.println("Passou pelo terceiro for.");
+            System.out.println(toString());
+            return this;
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-        head = null;
-        tail = null;
-        count = 0;
-        for (int y = 0; y < lista.size(); y++) {
-            add(lista.getNodo(y));
-        }
-        return this;
+        return null;
     }
 
     public void mostraOrdenado() {
@@ -369,16 +385,15 @@ public class LinkedListOfWord {
         int gira = 0;
         while (gira < count) {
             aux = head;
-            for(int i = 0; i < count; i++){
-            adiciona = aux.element;
-            aux = aux.next;
-            if(lista.equals(adiciona)){
-            }
-            else{
-            if(adiciona.charAt(0) < aux.element.charAt(0)){
-            
-            }
-            }
+            for (int i = 0; i < count; i++) {
+                adiciona = aux.element;
+                aux = aux.next;
+                if (lista.equals(adiciona)) {
+                } else {
+                    if (adiciona.charAt(0) < aux.element.charAt(0)) {
+
+                    }
+                }
             }
             gira++;
         }

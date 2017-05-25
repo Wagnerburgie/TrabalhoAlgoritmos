@@ -8,8 +8,9 @@ public class App {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String texto = in.next();
-        String nome = ("src/documentos/stopwords.txt");
+        //System.out.println("Digite o caminho do arquivo para ser lido: ");
+        //String texto = in.next();
+        String nome = ("src/documentos/java.txt");
         LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(nome);
         LinkedListOfWord listaComStopWords = criaListaComAsStopWords(nome);
         int menu = 0;
@@ -50,7 +51,7 @@ public class App {
             }
         }
     }
-    
+
     // Criando uma lista de stopwords.
     public static LinkedListOfWord addStopWords() {
         try {
@@ -92,7 +93,7 @@ public class App {
         }
         return null;
     }
-    
+
     // Lista sem as stopwords.
     public static LinkedListOfWord criaListaSemAsStopWords(String texto) {
         try {
@@ -152,8 +153,6 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
-            // Imprime a lista alice.
-            System.out.println(alice.toString());
             // Captura uma excessão caso houver.
             return alice;
         } catch (Exception e) {
@@ -162,7 +161,7 @@ public class App {
         }
         return null;
     }
-    
+
     // Lista com as stopwords.
     public static LinkedListOfWord criaListaComAsStopWords(String texto) {
         try {
@@ -221,8 +220,6 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
-            // Imprime a lista alice.
-            System.out.println(alice.toString());
             // Captura uma excessão caso houver.
             return alice;
         } catch (Exception e) {
@@ -255,17 +252,16 @@ public class App {
     }
 
     // Métodos sobre as questões propostas no trabalho.
-    
     private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfWord listaSemStopWords) {
-    System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
+        System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
     }
 
     private static void exibirPercentualDeStopWords(LinkedListOfWord listaComStopWords, LinkedListOfWord listaSemStopWords) {
         int totalOcorrenciasComStopWords = listaComStopWords.getTotalDeTodasAsOcorrencias();
         int totalOcorrenciasSemStopWords = listaSemStopWords.getTotalDeTodasAsOcorrencias();
-        int totalOcorrenciasDePalavrasNoTexto = 
-                totalOcorrenciasComStopWords + totalOcorrenciasSemStopWords;
-        int resultado = (totalOcorrenciasComStopWords*100)/totalOcorrenciasDePalavrasNoTexto;
+        int totalOcorrenciasDePalavrasNoTexto
+                = totalOcorrenciasComStopWords + totalOcorrenciasSemStopWords;
+        double resultado = (totalOcorrenciasComStopWords * 100) / totalOcorrenciasDePalavrasNoTexto;
         System.out.println("Porcentagem: " + resultado + "%");
     }
 
