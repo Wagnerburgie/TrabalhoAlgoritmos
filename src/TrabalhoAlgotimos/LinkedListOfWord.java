@@ -1,7 +1,9 @@
 package TrabalhoAlgotimos;
 
+import TrabalhoAlgotimos.LinkedListOfWord.Node;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class LinkedListOfWord {
 
@@ -276,16 +278,14 @@ public class LinkedListOfWord {
 
     public Node getNodo(String palavra) {
         Node aux = head;
-        System.out.println("Nodo no getNodo: " + aux.element);
-        System.out.println("Palavra no getNodo: " + palavra);
         for (int i = 1; i < count; i++) {
-            System.out.println("Índice no getNodo: " + i);
-            if (aux.element.equalsIgnoreCase(palavra)) {
+            if (aux.element.equals(String.valueOf(palavra))) {
                 System.out.println("Entrou no if");
                 return aux;
             }
             aux = aux.next;
         }
+        System.out.println("Retorna null no getNodo");
         return null;
     }
 
@@ -339,37 +339,41 @@ public class LinkedListOfWord {
 
     private LinkedListOfWord ordenaListaAuxiliar() {
         try {
-            ArrayList<String> palavras = new ArrayList<>();
+            ArrayList<Node> palavras = new ArrayList<>();
             Node nodo1 = head;
             for (int a = 1; a < count; a++) {
-                palavras.add(nodo1.element);
+                palavras.add(nodo1);
                 nodo1 = nodo1.next;
             }
             System.out.println("Passou pelo primeiro for.");
-            Collections.sort(palavras);
-            System.out.println("Passou pela ordenação.");            
-            LinkedListOfWord lista = new LinkedListOfWord();
-            System.out.println("Count: " + count);
-            for (int x = 0; x < palavras.size(); x++) {
-                String palavra = palavras.get(x);
-                System.out.println("Palavra no ordenar: " + palavra);
-                Node nodo2 = getNodo(palavra);
-                //int indice = indexOf(palavras.get(x));
-                //Node nodo2 = get(indice);
-                //System.out.println("Nodo: " + nodo2.element);
-                System.out.println("Nodo no ordenar: " + nodo2.element);
-                System.out.println("Índice no ordenar: " + x);
-                lista.add(nodo2);
+            Comparator<Node> Comparator;
+            palavras.sort(Comparator = new Comparator() {
+                public int compareNode(Node o1, Node o2) {
+                    if (o1.element.compareTo(o2.element) < 0) {
+                        return -1;
+                    } else if (o1.element.compareTo(o2.element) > 0) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+                @Override
+                public int compare(Object o1, Object o2) {
+                    return compareNode((Node)o1, (Node)o2);
+                }
+            });
+            for(int b = 0; b < palavras.size(); b++){
+                System.out.println("Palavra: " + palavras.get(b).element);
             }
-            System.out.println("Passou pelo segundo for.");
+            System.out.println("Passou pela ordenação.");
+            System.out.println("Count: " + count);
             head = null;
             tail = null;
             count = 0;
-            for (int y = 0; y < lista.size(); y++) {
-                add(lista.getNodo(y));
+            for (int x = 0; x < palavras.size(); x++) {
+                add(palavras.get(x));                
             }
-            System.out.println("Passou pelo terceiro for.");
-            System.out.println(toString());
+            System.out.println("Passou pelo segundo for.");            
             return this;
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
