@@ -382,6 +382,7 @@ public class LinkedListOfWord {
                     return 0;
                 }
             }
+
             @Override
             public int compare(Object o1, Object o2) {
                 return compareNode((Node) o1, (Node) o2);
@@ -390,31 +391,59 @@ public class LinkedListOfWord {
         return palavras;
     }
 
-    public void mostraOrdenado() {
-        Node aux = null;
-        LinkedListOfWord lista = new LinkedListOfWord();
-        String maior = "";
-        String adiciona = "";
-        int gira = 0;
-        while (gira < count) {
-            aux = head;
-            
-            for (int i = 1; i < count; i++) {
-                adiciona = aux.next.element;
-                System.out.println(aux.element);
-                if (!lista.containsElement(aux.element)){
-                } else {
-                    if(aux.element.compareToIgnoreCase(adiciona) < 0){
-                        lista.add(aux);
+    public LinkedListOfWord mostraOrdenado() {
+        //try {
+            Node aux = null;
+            LinkedListOfWord lista = new LinkedListOfWord();
+            LinkedListOfWord listaAux = new LinkedListOfWord();;
+            String maior = "";
+            Node next = null;
+            Node atual = null;
+            int gira = 1;
+            System.out.println("Count: " + count);
+            while (gira < count) {
+                aux = head;
+                for (int i = 1; i < count - 1; i++) {
+                    if (aux.next != null) {
+                        System.out.println("Element: " + aux.element);
+                        next = aux.next;
+                        System.out.println("Next: " + next.element);
+                        //atual = listaAux.get(i);
+                        //System.out.println("Atual: " + next);
                         System.out.println(aux.element);
+                        if (!lista.containsElement(aux.element)) {
+                            if (aux.element.compareToIgnoreCase(next.element) < 0) {
+                                lista.add(aux);
+                                //System.out.println(aux.element);
+                            }
+                        } else if (!listaAux.containsElement(aux.element)) {
+                            if (aux.element.compareToIgnoreCase(next.element) < 0) {
+                                listaAux.add(aux);
+                            }
+                        }
                     }
+                    aux = aux.next;
                 }
-                aux = aux.next;
+                if (listaAux.size() == 0) {
+                    listaAux = lista;
+                    lista.clear();
+                } else {
+                    lista = listaAux;
+                    listaAux.clear();
+                }
+                gira++;
             }
-            gira++;
-        }
-         
+            if (lista.size() > 0) {
+                return lista;
+            } else {
+                return listaAux;
+            }
+//        } catch (Exception e) {
+//            System.out.println("Erro: " + e.getMessage());
+//        }
+//        return null;
     }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
