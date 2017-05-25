@@ -253,15 +253,19 @@ public class App {
 
     // Métodos sobre as questões propostas no trabalho.
     private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfWord listaSemStopWords) {
-        System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
+        listaSemStopWords.mostraOrdenado();
+        //System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
     }
 
     private static void exibirPercentualDeStopWords(LinkedListOfWord listaComStopWords, LinkedListOfWord listaSemStopWords) {
-        int totalOcorrenciasComStopWords = listaComStopWords.getTotalDeTodasAsOcorrencias();
-        int totalOcorrenciasSemStopWords = listaSemStopWords.getTotalDeTodasAsOcorrencias();
-        int totalOcorrenciasDePalavrasNoTexto
+        float totalOcorrenciasComStopWords = listaComStopWords.getTotalDeTodasAsOcorrencias();
+        float totalOcorrenciasSemStopWords = listaSemStopWords.getTotalDeTodasAsOcorrencias();
+        float totalOcorrenciasDePalavrasNoTexto
                 = totalOcorrenciasComStopWords + totalOcorrenciasSemStopWords;
-        double resultado = (totalOcorrenciasComStopWords * 100) / totalOcorrenciasDePalavrasNoTexto;
+        float resultado = (totalOcorrenciasComStopWords * 100) / totalOcorrenciasDePalavrasNoTexto;
+        System.out.println(totalOcorrenciasComStopWords);
+        System.out.println(totalOcorrenciasSemStopWords);
+        System.out.println(totalOcorrenciasDePalavrasNoTexto);
         System.out.println("Porcentagem: " + resultado + "%");
     }
 

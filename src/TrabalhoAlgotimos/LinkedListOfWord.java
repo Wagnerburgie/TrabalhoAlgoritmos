@@ -274,6 +274,7 @@ public class LinkedListOfWord {
                 total = aux.totalOcorrencias;
                 palavra = aux.element;
             }
+            aux = aux.next;
         }
         return palavra;
     }
@@ -389,28 +390,31 @@ public class LinkedListOfWord {
         return palavras;
     }
 
-//    public void mostraOrdenado() {
-//        Node aux = head;
-//        LinkedListOfWord lista = new LinkedListOfWord();
-//        String maior = "";
-//        String adiciona = "";
-//        int gira = 0;
-//        while (gira < count) {
-//            aux = head;
-//            for (int i = 0; i < count; i++) {
-//                adiciona = aux.element;
-//                aux = aux.next;
-//                if (lista.equals(adiciona)) {
-//                } else {
-//                    if (adiciona.charAt(0) < aux.element.charAt(0)) {
-//
-//                    }
-//                }
-//            }
-//            gira++;
-//        }
-//
-//    }
+    public void mostraOrdenado() {
+        Node aux = null;
+        LinkedListOfWord lista = new LinkedListOfWord();
+        String maior = "";
+        String adiciona = "";
+        int gira = 0;
+        while (gira < count) {
+            aux = head;
+            
+            for (int i = 1; i < count; i++) {
+                adiciona = aux.next.element;
+                System.out.println(aux.element);
+                if (!lista.containsElement(aux.element)){
+                } else {
+                    if(aux.element.compareToIgnoreCase(adiciona) < 0){
+                        lista.add(aux);
+                        System.out.println(aux.element);
+                    }
+                }
+                aux = aux.next;
+            }
+            gira++;
+        }
+         
+    }
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
