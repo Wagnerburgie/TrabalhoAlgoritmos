@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
         while (true) {
             LinkedListOfWord listaComStopWords;
@@ -251,26 +252,28 @@ public class App {
         System.out.println("Palavra mais frequente: " + listaSemStopWords.getPalavraMaisFrequente());
     }
 
-    private static void pesquisarPalavra(LinkedListOfWord listaSemStopWords, String palavra) {
+    private static void pesquisarPalavra(LinkedListOfWord listaSemStopWords, String palavra) throws IOException {
         Scanner ler = new Scanner(System.in);
         LinkedListOfPage paginas = listaSemStopWords.getPages(palavra);
         if (paginas != null) {
-            System.out.println("Palavra: " + palavra + "\n" + paginas + "\n");
-            System.out.print("Escolha o número da página que "
+            System.out.println("\nPalavra: " + palavra + "\n"
+                    + "Páginas (Número da página(Num) , "
+                    + "Ocorrências na Página(Oco)): { " + paginas + " }\n");
+            System.out.print("\nEscolha o número da página que "
                     + "você deseja visualizar a palavra: ");
             int num = ler.nextInt();
             boolean achouPagina = false;
-            for(int i = 0; i < paginas.size(); i ++){
-                if(paginas.get(i).nroPagina == num){
+            for (int i = 0; i < paginas.size(); i++) {
+                if (paginas.get(i).nroPagina == num) {
                     achouPagina = true;
                     i = paginas.size();
                 }
             }
-            if(!achouPagina){
+            if (!achouPagina) {
                 System.out.println("Desculpe. O número da página que "
                         + "você digitou não corresponde aos números "
                         + "de páginas em que a palavra aparece.\n");
-            }else{
+            } else {
                 System.out.println(mostrarPaginaComPalavra(palavra, num, listaSemStopWords.getArquivo()));
             }
         } else {
@@ -283,7 +286,48 @@ public class App {
         System.out.println(listaSemStopWords.buscaPaginaMaisReferenciada(stopWords));
     }
 
-    private static boolean mostrarPaginaComPalavra(String palavra, int numeroPagina, String arquivo) {
-        return true;
+    private static String mostrarPaginaComPalavra(String palavra, int numeroPagina, String nomeArquivo) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        try {
+            builder.append("\n");
+            BufferedReader arquivo = new BufferedReader(new FileReader(nomeArquivo));
+            String linha;
+            String[] array;
+            int contadorLinha = 1;
+            int contadorPagina = 1;
+            while (arquivo.ready()) {
+                if (contadorLinha > 40) {
+                    contadorPagina++;
+                    contadorLinha = 1;
+                }
+                linha = arquivo.readLine();
+                array = linha.split(" |\\-");
+                if (contadorPagina == numeroPagina) {
+                    String texto = "";
+                    if (linha.contains(palavra)) {
+                        boolean adicionou = false;
+                        for (int i = 0; i < array.length; i++) {
+                            String palavraAux =Util.removeSomeCharacters(array[i]);
+                            if (palavra.equals(palavraAux)) {
+                                texto = linha.replace(palavraAux, "[" + palavraAux + "]");
+                                adicionou = true;
+                                i = array.length;
+                            }
+                        }
+                        if(!adicionou){
+                            texto = linha;
+                        }
+                    } else {
+                        texto = linha;
+                    }
+                    builder.append(texto);
+                    builder.append("\n");
+                }
+                contadorLinha++;
+            }
+            return builder.toString();
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

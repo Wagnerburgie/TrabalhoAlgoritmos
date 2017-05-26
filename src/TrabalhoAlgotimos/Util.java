@@ -6,6 +6,7 @@
 package TrabalhoAlgotimos;
 
 public class Util {
+
     // Método que remove caracteres desnecessários.
     public static String removeSomeCharacters(String palavra) {
         // Coloca a palavra recebida por parâmetro dentro de uma String
@@ -23,7 +24,18 @@ public class Util {
                 replace("¹", "").replace("²", "").replace("³", "").
                 replace("£", "").replace("¢", "").replace("¬", "").
                 replace("°", "").replace(":", "").replace("º", "");
-        // Retorna o resultado.
+        String resposta = null;
+        if (!resultado.equals("")) {
+            if (resultado.indexOf("'") == (resultado.length() - 1)) {
+                resposta = resultado.replace("'", "");
+                return resposta;
+            } else if (resultado.indexOf("'") == 0) {
+                for (int i = 1; i < resultado.length(); i++) {
+                    resposta += resultado.charAt(i);
+                }
+                return resposta;
+            }
+        }
         return resultado;
     }
 }
