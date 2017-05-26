@@ -7,14 +7,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class App {
-
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        //System.out.println("Digite o caminho do arquivo para ser lido: ");
-        //String texto = in.next();
-        String nome = ("src/documentos/teste.txt");
-        LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(nome);
-        LinkedListOfWord listaComStopWords = criaListaComAsStopWords(nome);
+        System.out.println("Digite o caminho do arquivo para ser lido: ");
+        String texto = in.next();
+        texto = ("src/documentos/alice.txt");
+        LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(texto);
+        LinkedListOfWord listaComStopWords = criaListaComAsStopWords(texto);
         int menu = 0;
         while (menu != 6) {
             System.out.println("Menu\n\nDigite:\n1) Exibir todo o índice "
@@ -257,7 +256,6 @@ public class App {
     private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfWord listaSemStopWords) {
         try {
             System.out.println(listaSemStopWords.mostraOrdenado());
-            //System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
         } catch (Exception ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }

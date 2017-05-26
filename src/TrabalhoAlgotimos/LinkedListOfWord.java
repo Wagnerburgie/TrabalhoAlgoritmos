@@ -342,163 +342,81 @@ public class LinkedListOfWord {
         return total;
     }
 
-    public LinkedListOfWord ordenarListaEmOrdemAlfabetica() {
-        if (count == 0) {
-            return null;
+    private boolean modificarNodos(String elemento) {
+        if (isEmpty()) {
+            throw new NullPointerException("Lista vazia!");
         }
         if (count == 1) {
-            return this;
+            return true;
         }
-        Node atual = head;
-        Node proximo = head.next;
-        Node aux = null;
-        if (count == 2 && atual.element.compareTo(proximo.element) > 0) {
-            aux = atual;
-            atual = proximo;
-            proximo = aux;
-            proximo.next = atual;
-            head = proximo;
+        Node prev = head;
+        Node atual = head.next;
+        if (prev.element.equals(elemento)) {
+            return false;
+        }
+        if (count == 2 && atual.element.equals(elemento)) {
+            Node aux = atual;
+            atual = prev;
+            prev = aux;
+            head = prev;
             tail = atual;
-            return this;
-        } else if (count == 2 && atual.element.compareTo(proximo.element) <= 0) {
-            return this;
+            head.next = tail;
+            tail.next = null;
+            return true;
         }
-        System.out.println("Chegou no return.");
-        return ordenaListaAuxiliar();
-    }
-
-    private LinkedListOfWord ordenaListaAuxiliar() {
-        try {
-            // Monta um ArrayList com os Nodos da LinkedListOfWord.
-            ArrayList<Node> palavras = montaArrayListComALinkedList();
-            // Ordena o ArrayList.
-            ArrayList<Node> arrayListOrdenado = ordenaArrayListDePalavras(palavras);
-            // Limpa a classe LinkedListOfWord.
-            clear();
-            // Adiciona os novos elementos já ordenados dentro da LinkedList.
-            for (int x = 0; x < palavras.size(); x++) {
-                add(arrayListOrdenado.get(x));
-            }
-            // Retorna a lista.
-            return this;
-        } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
+        if (atual.element.equals(elemento)) {
+            Node aux = prev.next;
+            Node helper = head;
+            prev.next = prev.next.next;
+            head = aux;
+            head.next = helper;
+            head.next.next = prev.next;
+            return true;
         }
-        return null;
+        return modificaNodosHelper(elemento);        
     }
-
-    private ArrayList<Node> montaArrayListComALinkedList() {
-        ArrayList<Node> palavras = new ArrayList<>();
-        Node nodo = head;
-        for (int a = 1; a < count; a++) {
-            palavras.add(nodo);
-            nodo = nodo.next;
-        }
-        return palavras;
-    }
-
-    private ArrayList<Node> ordenaArrayListDePalavras(ArrayList<Node> palavras) {
-        Comparator<Node> Comparator;
-        palavras.sort(Comparator = new Comparator() {
-            public int compareNode(Node o1, Node o2) {
-                if (o1.element.compareTo(o2.element) < 0) {
-                    return -1;
-                } else if (o1.element.compareTo(o2.element) > 0) {
-                    return 1;
-                } else {
-                    return 0;
+    
+    public boolean modificaNodosHelper(String elemento){
+        Node prev = head;
+        Node atual = head.next;
+        Node proximo = head.next.next;
+        while (proximo != null) {
+            if (proximo.element.equals(elemento)) {
+                Node aux = proximo;
+                Node helper = atual;
+                atual.next = atual.next.next;
+                prev.next = aux;
+                prev.next.next = helper;
+                prev.next.next.next = atual.next;
+                if (proximo.equals(tail)) {
+                    tail = prev.next.next;
                 }
+                return true;
             }
-
-            @Override
-            public int compare(Object o1, Object o2) {
-                return compareNode((Node) o1, (Node) o2);
-            }
-        });
-        return palavras;
+            prev = prev.next;
+            atual = atual.next;
+            proximo = proximo.next;
+        }
+        return false;
     }
-
-//    public LinkedListOfWord mostraOrdenado() throws Exception {
-//        //try {
-//        Node atual;
-//        LinkedListOfWord listaAux = new LinkedListOfWord();
-//        LinkedListOfWord listaAuxHelper = new LinkedListOfWord();
-//        int gira = 1;
-//        System.out.println("Count: " + count);
-//        while (gira < count) {
-//            atual = head;
-//            for (int i = 0; i < count - 1; i++) {
-//                System.out.println("Atual: " + atual.element);
-//                if (atual.element.compareToIgnoreCase(atual.next.element) < 0) {
-//                    if (!listaAux.containsElement(atual.element)) {
-//                        listaAux.add(atual.element, atual.totalOcorrencias, atual.paginas);
-//                    } else if (!listaAux.containsElement(atual.next.element)) {
-//                        listaAux.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
-//                    }
-//                } else {
-//                    if (!listaAuxHelper.containsElement(atual.next.element)) {
-//                        listaAuxHelper.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
-//                    } else if (!listaAuxHelper.containsElement(atual.element)) {
-//                        listaAuxHelper.add(atual.element, atual.totalOcorrencias, atual.paginas);
-//                    }
-//                }
-//                atual = atual.next;
-//            }
-//            passaDadosPraLista(listaAux, listaAuxHelper);
-//            listaAux.clear();
-//            //}
-//            gira++;
-//        }
-//        return this;
-//    }
-
+    
     public LinkedListOfWord mostraOrdenado() throws Exception {
-        //try {
         Node atual;
-        LinkedListOfWord listaAux = new LinkedListOfWord();
-        LinkedListOfWord listaAuxHelper = new LinkedListOfWord();
-        int gira = 1;
+        int gira = 0;
         System.out.println("Count: " + count);
         while (gira < count) {
             atual = head;
-            for (int i = 1; i < count; i++) {
-                System.out.println("Atual: " + atual.element);
-                if (atual.element.compareToIgnoreCase(atual.next.element) < 0) {
-                    if (!listaAux.containsElement(atual.element)) {
-                        listaAux.add(atual.element, atual.totalOcorrencias, atual.paginas);
-                    }
-                    if(!listaAux.containsElement(atual.next.element)){
-                        listaAux.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
-                    }
-                } else {
-                    if (!listaAux.containsElement(atual.next.element)) {
-                        listaAux.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
-                    }
-                    if (!listaAux.containsElement(atual.element)) {
-                        listaAux.add(atual.element, atual.totalOcorrencias, atual.paginas);
-                    }
+            while (atual != null && atual.next != null) {
+                if (atual.element.compareTo(atual.next.element) > 0) {
+                    modificarNodos(atual.next.element);
                 }
-                atual = atual.next;
+                if (atual.next != null) {
+                    atual = atual.next;
+                }
             }
-            passaDadosPraLista(listaAux);
-            listaAux.clear();
-            //}
             gira++;
         }
         return this;
-    }
-    
-    private void passaDadosPraLista(LinkedListOfWord lista1) throws Exception {
-        clear();
-        int contadorLista1 = 0;
-        int contadorLista2 = 0;
-        for (int i = 0; i < lista1.size(); i++) {
-            if (contadorLista1 < lista1.size()) {
-                Node aux = lista1.get(contadorLista1);
-                add(aux.element, aux.totalOcorrencias, aux.paginas);
-                contadorLista1++;
-            }
-        }
     }
 
     @Override
@@ -507,7 +425,6 @@ public class LinkedListOfWord {
         Node aux = head;
         int contador = 0;
         while (contador < count) {
-            //System.out.println("Contador: " + contador);
             s.append("\n");
             s.append("Palavra: ");
             s.append(aux.element);
