@@ -2,14 +2,15 @@ package TrabalhoAlgotimos;
 
 public class LinkedListOfPage {
 
-    // Classe interna Node
-    private class Node {
+    // Classe interna Page
+    private class Page {
 
         public Integer ocorrencia;
         public Integer nroPagina;
-        public Node next;
+        public int totalOcorrencias;
+        public Page next;
 
-        public Node(Integer element) {
+        public Page(Integer element) {
             ocorrencia = 1;
             this.nroPagina = element;
             next = null;
@@ -17,9 +18,9 @@ public class LinkedListOfPage {
     }
 
     // Referência para o primeiro elemento da lista encadeada.
-    private Node head;
+    private Page head;
     // Referência para o último elemento da lista encadeada.
-    private Node tail;
+    private Page tail;
     // Contador para a quantidade de elementos que a lista contem.
     private int count;
 
@@ -38,13 +39,14 @@ public class LinkedListOfPage {
      * @param element elemento a ser adicionado ao final da lista
      */
     public void add(Integer element) {
-        Node aux = new Node(element);
+        Page aux = new Page(element);
+        aux.totalOcorrencias++;
         if (head == null) {
             head = aux;
         } else {
             tail.next = aux;
         }
-        tail = aux;
+        tail = aux;        
         count++;
     }
 
@@ -60,7 +62,7 @@ public class LinkedListOfPage {
             throw new IndexOutOfBoundsException();
         }
 
-        Node n = new Node(element);
+        Page n = new Page(element);
         if (index == 0) { //insere no inicio
             n.next = head;
             head = n;
@@ -71,7 +73,7 @@ public class LinkedListOfPage {
             tail.next = n;
             tail = n;
         } else { // insere no meio
-            Node aux = head;
+            Page aux = head;
             for (int i = 0; i < index - 1; i++) {
                 aux = aux.next;
             }
@@ -92,7 +94,7 @@ public class LinkedListOfPage {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
-        Node aux = head;
+        Page aux = head;
         int c = 0;
         while (c < index) {
             aux = aux.next;
@@ -114,7 +116,7 @@ public class LinkedListOfPage {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
-        Node aux = head;
+        Page aux = head;
         for (int i = 0; i < index; i++) {
             aux = aux.next;
         }
@@ -147,8 +149,8 @@ public class LinkedListOfPage {
             return true;
         }
 
-        Node ant = head;
-        Node aux = head.next;
+        Page ant = head;
+        Page aux = head.next;
 
         for (int i = 1; i < count; i++) {
             if (aux.nroPagina.equals(element)) {
@@ -207,7 +209,7 @@ public class LinkedListOfPage {
             throw new IndexOutOfBoundsException();
         }
 
-        Node aux = head;
+        Page aux = head;
         if (index == 0) {
             if (tail == head) // se tiver apenas um elemento
             {
@@ -241,7 +243,7 @@ public class LinkedListOfPage {
      */
     public int indexOf(Integer element) {
         int index = 0;
-        Node aux = head;
+        Page aux = head;
         while (aux != null) {
             if (aux.nroPagina.equals(element)) {
                 return (index);
@@ -259,7 +261,7 @@ public class LinkedListOfPage {
      * @return true se a lista contem o elemento especificado
      */
     public boolean contains(Integer element) {
-        Node aux = head;
+        Page aux = head;
         while (aux != null) {
             if (aux.nroPagina.equals(element)) {
                 return (true);
@@ -273,7 +275,7 @@ public class LinkedListOfPage {
     public String toString() {
         StringBuilder s = new StringBuilder();
 
-        Node aux = head;
+        Page aux = head;
 
         while (aux != null) {
             s.append("(");
@@ -290,10 +292,11 @@ public class LinkedListOfPage {
     }
     //Metodo para aumentar Ocorrencias
     public boolean aumentaOcorrencia(int numeroP) {
-        Node aux = head;
+        Page aux = head;
         for (int i = 0; i < count; i++) { //1
             if (aux.nroPagina == numeroP) {
                 aux.ocorrencia++;
+                aux.totalOcorrencias++;
                 return true;
             }
             aux = aux.next;
@@ -305,7 +308,7 @@ public class LinkedListOfPage {
    if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
-        Node aux = head;
+        Page aux = head;
         int c = 0;
         while (c < index) {
             aux = aux.next;

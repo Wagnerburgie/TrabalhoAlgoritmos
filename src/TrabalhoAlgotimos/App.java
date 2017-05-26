@@ -3,6 +3,8 @@ package TrabalhoAlgotimos;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class App {
 
@@ -10,7 +12,7 @@ public class App {
         Scanner in = new Scanner(System.in);
         //System.out.println("Digite o caminho do arquivo para ser lido: ");
         //String texto = in.next();
-        String nome = ("src/documentos/java.txt");
+        String nome = ("src/documentos/teste.txt");
         LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(nome);
         LinkedListOfWord listaComStopWords = criaListaComAsStopWords(nome);
         int menu = 0;
@@ -253,8 +255,12 @@ public class App {
 
     // Métodos sobre as questões propostas no trabalho.
     private static void exibirTodoIndiceRemissivoEmOrdemAlfabetica(LinkedListOfWord listaSemStopWords) {
-        System.out.println(listaSemStopWords.mostraOrdenado());
-        //System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
+        try {
+            System.out.println(listaSemStopWords.mostraOrdenado());
+            //System.out.println(listaSemStopWords.ordenarListaEmOrdemAlfabetica());
+        } catch (Exception ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private static void exibirPercentualDeStopWords(LinkedListOfWord listaComStopWords, LinkedListOfWord listaSemStopWords) {

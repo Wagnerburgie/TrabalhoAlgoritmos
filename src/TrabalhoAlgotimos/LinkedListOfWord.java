@@ -1,25 +1,9 @@
 package TrabalhoAlgotimos;
 
-import TrabalhoAlgotimos.LinkedListOfWord.Node;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class LinkedListOfWord {
-
-    public class Node {
-
-        public String element;
-        public Node next;
-        private LinkedListOfPage paginas;
-        public int totalOcorrencias;
-
-        public Node(String element) {
-            this.element = element;
-            totalOcorrencias = 1;
-            next = null;
-            paginas = new LinkedListOfPage();
-        }
-    }
 
     private Node head;
     private Node tail;
@@ -31,6 +15,10 @@ public class LinkedListOfWord {
         count = 0;
     }
 
+    public Node head() {
+        return head;
+    }
+
     public void add(Node nodo) {
         // Praticamente segue o padrão dos outros métodos add, 
         // com excessão da última linha.
@@ -40,14 +28,38 @@ public class LinkedListOfWord {
             tail.next = nodo;
         }
         tail = nodo;
-        // Deixa o next null, já que o nodo pode vir com o next preenchido.
-        tail.next = null;
         count++;
+    }
+
+    public Node addAndReturnTail(Node nodo) {
+        // Praticamente segue o padrão dos outros métodos add, 
+        // com excessão da última linha.
+        if (head == null) {
+            head = nodo;
+        } else {
+            tail.next = nodo;
+        }
+        tail = nodo;
+        count++;
+        return tail;
     }
 
     public void add(String element, int numeroPagina) {
         Node novo = new Node(element);
         novo.paginas.add(numeroPagina);
+        if (head == null) {
+            head = novo;
+        } else {
+            tail.next = novo;
+        }
+        tail = novo;
+        count++;
+    }
+
+    public void add(String element, int totalOcorrencias, LinkedListOfPage paginas) {
+        Node novo = new Node(element);
+        novo.paginas = paginas;
+        novo.totalOcorrencias = totalOcorrencias;
         if (head == null) {
             head = novo;
         } else {
@@ -179,6 +191,21 @@ public class LinkedListOfWord {
         }
 
         return false;
+    }
+
+    public Node removeHead() throws Exception {
+        if (count == 0) {
+            throw new Exception("Lista vazia!");
+        }
+        Node aux = head;
+        if (count == 1) {
+            head = null;
+            tail = null;
+        } else {
+            head = head.next;
+        }
+        count--;
+        return aux;
     }
 
     public boolean isEmpty() {
@@ -391,57 +418,87 @@ public class LinkedListOfWord {
         return palavras;
     }
 
-    public LinkedListOfWord mostraOrdenado() {
-        //try {
-            Node aux = null;
-            LinkedListOfWord lista = new LinkedListOfWord();
-            LinkedListOfWord listaAux = new LinkedListOfWord();;
-            String maior = "";
-            Node next = null;
-            Node atual = null;
-            int gira = 1;
-            System.out.println("Count: " + count);
-            while (gira < count) {
-                aux = head;
-                for (int i = 1; i < count - 1; i++) {
-                    if (aux.next != null) {
-                        System.out.println("Element: " + aux.element);
-                        next = aux.next;
-                        System.out.println("Next: " + next.element);
-                        //atual = listaAux.get(i);
-                        //System.out.println("Atual: " + next);
-                        System.out.println(aux.element);
-                        if (!lista.containsElement(aux.element)) {
-                            if (aux.element.compareToIgnoreCase(next.element) < 0) {
-                                lista.add(aux);
-                                //System.out.println(aux.element);
-                            }
-                        } else if (!listaAux.containsElement(aux.element)) {
-                            if (aux.element.compareToIgnoreCase(next.element) < 0) {
-                                listaAux.add(aux);
-                            }
-                        }
-                    }
-                    aux = aux.next;
-                }
-                if (listaAux.size() == 0) {
-                    listaAux = lista;
-                    lista.clear();
-                } else {
-                    lista = listaAux;
-                    listaAux.clear();
-                }
-                gira++;
-            }
-            if (lista.size() > 0) {
-                return lista;
-            } else {
-                return listaAux;
-            }
-//        } catch (Exception e) {
-//            System.out.println("Erro: " + e.getMessage());
+//    public LinkedListOfWord mostraOrdenado() throws Exception {
+//        //try {
+//        Node atual;
+//        LinkedListOfWord listaAux = new LinkedListOfWord();
+//        LinkedListOfWord listaAuxHelper = new LinkedListOfWord();
+//        int gira = 1;
+//        System.out.println("Count: " + count);
+//        while (gira < count) {
+//            atual = head;
+//            for (int i = 0; i < count - 1; i++) {
+//                System.out.println("Atual: " + atual.element);
+//                if (atual.element.compareToIgnoreCase(atual.next.element) < 0) {
+//                    if (!listaAux.containsElement(atual.element)) {
+//                        listaAux.add(atual.element, atual.totalOcorrencias, atual.paginas);
+//                    } else if (!listaAux.containsElement(atual.next.element)) {
+//                        listaAux.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
+//                    }
+//                } else {
+//                    if (!listaAuxHelper.containsElement(atual.next.element)) {
+//                        listaAuxHelper.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
+//                    } else if (!listaAuxHelper.containsElement(atual.element)) {
+//                        listaAuxHelper.add(atual.element, atual.totalOcorrencias, atual.paginas);
+//                    }
+//                }
+//                atual = atual.next;
+//            }
+//            passaDadosPraLista(listaAux, listaAuxHelper);
+//            listaAux.clear();
+//            //}
+//            gira++;
 //        }
-//        return null;
+//        return this;
+//    }
+
+    public LinkedListOfWord mostraOrdenado() throws Exception {
+        //try {
+        Node atual;
+        LinkedListOfWord listaAux = new LinkedListOfWord();
+        LinkedListOfWord listaAuxHelper = new LinkedListOfWord();
+        int gira = 1;
+        System.out.println("Count: " + count);
+        while (gira < count) {
+            atual = head;
+            for (int i = 1; i < count; i++) {
+                System.out.println("Atual: " + atual.element);
+                if (atual.element.compareToIgnoreCase(atual.next.element) < 0) {
+                    if (!listaAux.containsElement(atual.element)) {
+                        listaAux.add(atual.element, atual.totalOcorrencias, atual.paginas);
+                    }
+                    if(!listaAux.containsElement(atual.next.element)){
+                        listaAux.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
+                    }
+                } else {
+                    if (!listaAux.containsElement(atual.next.element)) {
+                        listaAux.add(atual.next.element, atual.next.totalOcorrencias, atual.next.paginas);
+                    }
+                    if (!listaAux.containsElement(atual.element)) {
+                        listaAux.add(atual.element, atual.totalOcorrencias, atual.paginas);
+                    }
+                }
+                atual = atual.next;
+            }
+            passaDadosPraLista(listaAux);
+            listaAux.clear();
+            //}
+            gira++;
+        }
+        return this;
+    }
+    
+    private void passaDadosPraLista(LinkedListOfWord lista1) throws Exception {
+        clear();
+        int contadorLista1 = 0;
+        int contadorLista2 = 0;
+        for (int i = 0; i < lista1.size(); i++) {
+            if (contadorLista1 < lista1.size()) {
+                Node aux = lista1.get(contadorLista1);
+                add(aux.element, aux.totalOcorrencias, aux.paginas);
+                contadorLista1++;
+            }
+        }
     }
 
     @Override
@@ -450,7 +507,7 @@ public class LinkedListOfWord {
         Node aux = head;
         int contador = 0;
         while (contador < count) {
-            System.out.println("Contador: " + contador);
+            //System.out.println("Contador: " + contador);
             s.append("\n");
             s.append("Palavra: ");
             s.append(aux.element);
