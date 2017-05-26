@@ -2,53 +2,65 @@ package TrabalhoAlgotimos;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class App {
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Digite o caminho do arquivo para ser lido: ");
-        String texto = in.next();
-        texto = ("src/documentos/alice.txt");
-        LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(texto);
-        LinkedListOfWord listaComStopWords = criaListaComAsStopWords(texto);
-        int menu = 0;
-        while (menu != 6) {
-            System.out.println("Menu\n\nDigite:\n1) Exibir todo o índice "
-                    + "remessivo em ordem alfabética\n"
-                    + "2) Exibir o percentual de stopwords do texto\n"
-                    + "3) Encontrar a palavra mais frequente "
-                    + "(com maior número de ocorrências)\n"
-                    + "4) Pesquisar palavra\n"
-                    + "5) Encontrar página complexa "
-                    + "(que contém o maior número de palavras indexadas)\n"
-                    + "6) Sair do menu\n");
-            menu = in.nextInt();
-            switch (menu) {
-                case 1:
-                    exibirTodoIndiceRemissivoEmOrdemAlfabetica(listaSemStopWords);
-                    break;
-                case 2:
-                    exibirPercentualDeStopWords(listaComStopWords, listaSemStopWords);
-                    break;
-                case 3:
-                    encontrarPalavraMaisFrequente(listaSemStopWords);
-                    break;
-                case 4:
-                    pesquisarPalavra(listaSemStopWords);
-                    break;
-                case 5:
-                    encontrarPaginaComplexa(listaSemStopWords);
-                    break;
-                case 6:
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("Digite apenas as opções "
-                            + "que aparecem no menu.");
-                    break;
+        while (true) {
+            LinkedListOfWord listaComStopWords;
+            System.out.print("Digite o nome do arquivo para ser lido: ");
+            String nome = in.next();
+            String caminho = "src/documentos/";
+            String arquivo = caminho + nome;
+            LinkedListOfWord stopWords = addStopWords();
+            LinkedListOfWord listaSemStopWords = criaListaSemAsStopWords(arquivo, stopWords);
+            if (listaSemStopWords == null) {
+                System.out.println("\nDesculpe. O arquivo que você digitou"
+                        + " não existe no pacote 'documentos' do projeto.\n");
+            } else {
+                System.out.println("\nEstrutura encadeada criada com sucesso.\n");
+                int menu = 0;
+                while (menu != 6) {
+                    System.out.println("Menu\n\nDigite:\n1. Para exibir todo o índice "
+                            + "remessivo em ordem alfabética\n"
+                            + "2. Para exibir o percentual de stopwords do texto\n"
+                            + "3. Para encontrar a palavra mais frequente "
+                            + "(com maior número de ocorrências)\n"
+                            + "4. Para pesquisar palavra\n"
+                            + "5. Para encontrar página complexa "
+                            + "(que contém o maior número de palavras indexadas)\n"
+                            + "6. Para sair do menu\n");
+                    menu = in.nextInt();
+                    switch (menu) {
+                        case 1:
+                            exibirTodoIndiceRemissivoEmOrdemAlfabetica(listaSemStopWords);
+                            break;
+                        case 2:
+                            listaComStopWords = criaListaComAsStopWords(arquivo, stopWords);
+                            exibirPercentualDeStopWords(listaComStopWords, listaSemStopWords);
+                            break;
+                        case 3:
+                            encontrarPalavraMaisFrequente(listaSemStopWords);
+                            break;
+                        case 4:
+                            System.out.print("Digite a palavra que você deseja pesquisar: ");
+                            String palavra = in.next();
+                            pesquisarPalavra(listaSemStopWords, palavra);
+                            break;
+                        case 5:
+                            encontrarPaginaComplexa(listaSemStopWords, stopWords);
+                            break;
+                        case 6:
+                            break;
+                        default:
+                            System.out.println("Digite apenas as opções "
+                                    + "que aparecem no menu.");
+                            break;
+                    }
+                }
             }
         }
     }
@@ -87,24 +99,17 @@ public class App {
             // Retorna a lista com as palavras que não 
             // devem conter no arquivo alice.txt.
             return lista;
-            // Captura uma excessão caso houver.
-        } catch (Exception e) {
-            // Imprime o erro da excessão.
-            System.out.println("Erro: " + e.getMessage());
+        } catch (IOException e) {
+            return null;
         }
-        return null;
     }
 
     // Lista sem as stopwords.
-    public static LinkedListOfWord criaListaSemAsStopWords(String texto) {
+    public static LinkedListOfWord criaListaSemAsStopWords(String texto, LinkedListOfWord stopWords) {
         try {
-
-            // Pega a lista com as palavras que não
-            // devem conter no arquivo alice.txt.
-            LinkedListOfWord stopWords = addStopWords();
             // Cria a lista que irá conter todas as palavras do arquivo
-            // alice.txt que não estão presentes na lista stopWords.
-            LinkedListOfWord alice = new LinkedListOfWord();
+            // enviado por parâmetro que não estão presentes na lista stopWords.
+            LinkedListOfWord alice = new LinkedListOfWord(texto);
             // Pega o arquivo alice.txt dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader(texto));
@@ -130,7 +135,7 @@ public class App {
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
                     // de cada String da linha.
-                    String palavra = removeSomeCharacters(linha[i]);
+                    String palavra = Util.removeSomeCharacters(linha[i]);
                     // Testa se a palavra não está presente
                     // dentro da lista stopWords
                     if (!stopWords.containsElement(palavra)
@@ -154,24 +159,18 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
-            // Captura uma excessão caso houver.
             return alice;
-        } catch (Exception e) {
-            // Imprime o erro da excessão.
-            System.out.println("Erro: " + e.getMessage());
+        } catch (IOException e) {
+            return null;
         }
-        return null;
     }
 
     // Lista com as stopwords.
-    public static LinkedListOfWord criaListaComAsStopWords(String texto) {
+    public static LinkedListOfWord criaListaComAsStopWords(String texto, LinkedListOfWord stopWords) {
         try {
-            // Pega a lista com as palavras que não
-            // devem conter no arquivo alice.txt.
-            LinkedListOfWord stopWords = addStopWords();
             // Cria a lista que irá conter todas as palavras do arquivo
-            // alice.txt que não estão presentes na lista stopWords.
-            LinkedListOfWord alice = new LinkedListOfWord();
+            // enviado por parâmetro que não estão presentes na lista stopWords.
+            LinkedListOfWord alice = new LinkedListOfWord(texto);
             // Pega o arquivo alice.txt dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader(texto));
@@ -197,7 +196,7 @@ public class App {
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
                     // de cada String da linha.
-                    String palavra = removeSomeCharacters(linha[i]);
+                    String palavra = Util.removeSomeCharacters(linha[i]);
                     // Testa se a palavra está presente
                     // dentro da lista stopWords
                     if (stopWords.containsElement(palavra)
@@ -221,35 +220,10 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
-            // Captura uma excessão caso houver.
             return alice;
-        } catch (Exception e) {
-            // Imprime o erro da excessão.
-            System.out.println("Erro: " + e.getMessage());
+        } catch (IOException e) {
+            return null;
         }
-        return null;
-    }
-
-    // Método que remove caracteres desnecessários.
-    public static String removeSomeCharacters(String palavra) {
-        // Coloca a palavra recebida por parâmetro dentro de uma String
-        // com todos os caracteres desnecessários removidos.
-        String resultado = palavra.replace("'", "").replace("ª", "").
-                replace(".", "").replace("!", "").replace("?", "").
-                replace(",", "").replace(";", "").replace("=", "").
-                replace("§", "").replace("|", "").replace("+", "").
-                replace("-", "").replace("{", "").replace("}", "").
-                replace("[", "").replace("]", "").replace("<", "").
-                replace(">", "").replace("/", "").replace("@", "").
-                replace("#", "").replace("$", "").replace("%", "").
-                replace("¨", "").replace("&", "").replace("*", "").
-                replace("(", "").replace(")", "").replace("_", "").
-                replace("¹", "").replace("²", "").replace("³", "").
-                replace("£", "").replace("¢", "").replace("¬", "").
-                replace("°", "").replace(":", "").replace("º", "").
-                replace("\"", "").replace(" ", "").replace("\n", "");
-        // Retorna o resultado.
-        return resultado;
     }
 
     // Métodos sobre as questões propostas no trabalho.
@@ -257,7 +231,7 @@ public class App {
         try {
             System.out.println(listaSemStopWords.mostraOrdenado());
         } catch (Exception ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Erro: " + ex.getMessage());;
         }
     }
 
@@ -274,12 +248,42 @@ public class App {
     }
 
     private static void encontrarPalavraMaisFrequente(LinkedListOfWord listaSemStopWords) {
-        System.out.println("Palavra: " + listaSemStopWords.getPalavraMaisFrequente());
+        System.out.println("Palavra mais frequente: " + listaSemStopWords.getPalavraMaisFrequente());
     }
 
-    private static void pesquisarPalavra(LinkedListOfWord listaSemStopWords) {
+    private static void pesquisarPalavra(LinkedListOfWord listaSemStopWords, String palavra) {
+        Scanner ler = new Scanner(System.in);
+        LinkedListOfPage paginas = listaSemStopWords.getPages(palavra);
+        if (paginas != null) {
+            System.out.println("Palavra: " + palavra + "\n" + paginas + "\n");
+            System.out.print("Escolha o número da página que "
+                    + "você deseja visualizar a palavra: ");
+            int num = ler.nextInt();
+            boolean achouPagina = false;
+            for(int i = 0; i < paginas.size(); i ++){
+                if(paginas.get(i).nroPagina == num){
+                    achouPagina = true;
+                    i = paginas.size();
+                }
+            }
+            if(!achouPagina){
+                System.out.println("Desculpe. O número da página que "
+                        + "você digitou não corresponde aos números "
+                        + "de páginas em que a palavra aparece.\n");
+            }else{
+                System.out.println(mostrarPaginaComPalavra(palavra, num, listaSemStopWords.getArquivo()));
+            }
+        } else {
+            System.out.println("Desculpe. Essa palavra não foi "
+                    + "encontrada na estrutura encadeada.\n");
+        }
     }
 
-    private static void encontrarPaginaComplexa(LinkedListOfWord listaSemStopWords) {
+    private static void encontrarPaginaComplexa(LinkedListOfWord listaSemStopWords, LinkedListOfWord stopWords) {
+        System.out.println(listaSemStopWords.buscaPaginaMaisReferenciada(stopWords));
+    }
+
+    private static boolean mostrarPaginaComPalavra(String palavra, int numeroPagina, String arquivo) {
+        return true;
     }
 }

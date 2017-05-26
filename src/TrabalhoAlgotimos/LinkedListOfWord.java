@@ -1,65 +1,57 @@
 package TrabalhoAlgotimos;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class LinkedListOfWord {
 
+    private class Node {
+
+        public String element;
+        public Node next;
+        public LinkedListOfPage paginas;
+        public int totalOcorrencias;
+
+        public Node(String element) {
+            this.element = element;
+            totalOcorrencias = 1;
+            next = null;
+            paginas = new LinkedListOfPage();
+        }
+        
+        @Override
+        public String toString(){
+            StringBuilder s = new StringBuilder();
+            s.append("\n");
+            s.append("Palavra: ");
+            s.append(element);
+            s.append("\n");
+            s.append("Páginas (Número da página(Num) , Ocorrências na Página(Oco)): { ");
+            s.append(paginas);
+            s.append(" }");
+            s.append("\n");
+            s.append("Total de ocorrências da palavra: ");
+            s.append(totalOcorrencias);
+            s.append("\n");
+            return s.toString();
+        }
+    }
+
+    private String arquivo;
     private Node head;
     private Node tail;
     private int count;
 
+    // MÉTODOS DO ENSINADOS EM AULA SEM MODIFICAÇÕES.
     public LinkedListOfWord() {
         head = null;
         tail = null;
         count = 0;
     }
 
-    public Node head() {
-        return head;
-    }
-
-    public void add(Node nodo) {
-        // Praticamente segue o padrão dos outros métodos add, 
-        // com excessão da última linha.
-        if (head == null) {
-            head = nodo;
-        } else {
-            tail.next = nodo;
-        }
-        tail = nodo;
-        count++;
-    }
-
-    public Node addAndReturnTail(Node nodo) {
-        // Praticamente segue o padrão dos outros métodos add, 
-        // com excessão da última linha.
-        if (head == null) {
-            head = nodo;
-        } else {
-            tail.next = nodo;
-        }
-        tail = nodo;
-        count++;
-        return tail;
-    }
-
-    public void add(String element, int numeroPagina) {
+    public void add(String element) {
         Node novo = new Node(element);
-        novo.paginas.add(numeroPagina);
-        if (head == null) {
-            head = novo;
-        } else {
-            tail.next = novo;
-        }
-        tail = novo;
-        count++;
-    }
-
-    public void add(String element, int totalOcorrencias, LinkedListOfPage paginas) {
-        Node novo = new Node(element);
-        novo.paginas = paginas;
-        novo.totalOcorrencias = totalOcorrencias;
         if (head == null) {
             head = novo;
         } else {
@@ -94,53 +86,6 @@ public class LinkedListOfWord {
         count++;
     }
 
-    public Node get(int index) {
-        if ((index < 0) || (index >= count)) {
-            throw new IndexOutOfBoundsException();
-        }
-        Node aux = head;
-        int c = 0;
-        while (c < index) {
-            aux = aux.next;
-            c++;
-        }
-        return (aux);
-    }
-
-    public int getOccurrences(String element, int numeroDaPagina) {
-        Node aux = head;
-        for (int i = 0; i < count; i++) {
-            if (aux.element.equalsIgnoreCase(element)) {
-                for (int j = 0; j < aux.paginas.size(); j++) {
-                    if (aux.paginas.getNroPagina(j) == numeroDaPagina) {
-                        return aux.paginas.getOcorrencia(j);
-                    }
-                }
-            }
-            aux = aux.next;
-        }
-        return 0;
-    }
-
-    public void changeOccurrences(String palavra, int numero, int ocorrencias) {
-        Node aux = head;
-        // Percorre a lista de palavras.
-        for (int i = 0; i < count; i++) {
-            // Testa se a palavra e o número da página
-            // são os mesmos dos parâmetros.
-            if (aux.element.equalsIgnoreCase(palavra)) {
-                if (aux.paginas.aumentaOcorrencia(numero)) {
-                    aux.totalOcorrencias++;
-                    return;
-                }
-                aux.totalOcorrencias++;
-                aux.paginas.add(numero);
-                return;
-            }
-            aux = aux.next;
-        }
-    }
-
     public String set(int index, String element) {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
@@ -152,7 +97,6 @@ public class LinkedListOfWord {
         String tmp = aux.element;
         aux.element = element;
         return tmp;
-
     }
 
     public boolean remove(String element) {
@@ -162,7 +106,6 @@ public class LinkedListOfWord {
         if (count == 0) {
             return false;
         }
-
         if (head.element.equals(element)) { // remocao do primeiro
             head = head.next;
             if (count == 1) { // se havia so um elemento na lista
@@ -171,10 +114,8 @@ public class LinkedListOfWord {
             count--;
             return true;
         }
-
         Node ant = head;
         Node aux = head.next;
-
         for (int i = 1; i < count; i++) {
             if (aux.element.equals(element)) {
                 if (aux == tail) { // remocao do ultimo
@@ -189,23 +130,7 @@ public class LinkedListOfWord {
             ant = ant.next;
             aux = aux.next;
         }
-
         return false;
-    }
-
-    public Node removeHead() throws Exception {
-        if (count == 0) {
-            throw new Exception("Lista vazia!");
-        }
-        Node aux = head;
-        if (count == 1) {
-            head = null;
-            tail = null;
-        } else {
-            head = head.next;
-        }
-        count--;
-        return aux;
     }
 
     public boolean isEmpty() {
@@ -226,7 +151,6 @@ public class LinkedListOfWord {
         if (index < 0 || index >= count) {
             throw new IndexOutOfBoundsException();
         }
-
         Node aux = head;
         if (index == 0) {
             if (tail == head) // se tiver apenas um elemento
@@ -264,6 +188,8 @@ public class LinkedListOfWord {
         return -1;
     }
 
+    // Apenas o nome do método foi modificado, 
+    // mas ele ele opera da mesma forma do que foi ensinado em aula.
     public boolean containsElement(String element) {
         Node aux = head;
         while (aux != null) {
@@ -273,6 +199,123 @@ public class LinkedListOfWord {
             aux = aux.next;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        Node aux = head;
+        while (aux != null) {
+            s.append(aux.toString());
+            aux = aux.next;
+        }
+        return s.toString();
+    }
+
+    // MÉTODOS CRIADOS E/OU MODIFICADOS PELO GRUPO.
+    public LinkedListOfWord(String arquivo) {
+        this.arquivo = arquivo;
+        head = null;
+        tail = null;
+        count = 0;
+    }
+
+    public String getArquivo(){
+        return this.arquivo;
+    }
+    
+    public void add(String element, int numeroPagina) {
+        Node novo = new Node(element);
+        novo.paginas.add(numeroPagina);
+        if (head == null) {
+            head = novo;
+        } else {
+            tail.next = novo;
+        }
+        tail = novo;
+        count++;
+    }
+
+    public void add(String element, int totalOcorrencias, LinkedListOfPage paginas) {
+        Node novo = new Node(element);
+        novo.paginas = paginas;
+        novo.totalOcorrencias = totalOcorrencias;
+        if (head == null) {
+            head = novo;
+        } else {
+            tail.next = novo;
+        }
+        tail = novo;
+        count++;
+    }
+
+    public Node get(int index) {
+        if ((index < 0) || (index >= count)) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node aux = head;
+        int c = 0;
+        while (c < index) {
+            aux = aux.next;
+            c++;
+        }
+        return aux;
+    }
+
+    public Node get(String palavra) {
+        Node aux = head;
+        while (aux != null) {
+            if (aux.element.equalsIgnoreCase(palavra)) {
+                return aux;
+            }
+            aux = aux.next;
+        }
+        return null;
+    }
+    
+    public LinkedListOfPage getPages(String palavra){
+        Node aux = head;
+        while (aux != null) {
+            if (aux.element.equals(palavra)) {
+                return aux.paginas;
+            }
+            aux = aux.next;
+        }
+        return null;
+    }
+    
+    public int getOccurrences(String element, int numeroDaPagina) {
+        Node aux = head;
+        for (int i = 0; i < count; i++) {
+            if (aux.element.equalsIgnoreCase(element)) {
+                for (int j = 0; j < aux.paginas.size(); j++) {
+                    if (aux.paginas.getNroPagina(j) == numeroDaPagina) {
+                        return aux.paginas.getOcorrencia(j);
+                    }
+                }
+            }
+            aux = aux.next;
+        }
+        return 0;
+    }
+
+    public void changeOccurrences(String palavra, int numero, int ocorrencias) {
+        Node aux = head;
+        // Percorre a lista de palavras.
+        for (int i = 0; i < count; i++) {
+            // Testa se a palavra e o número da página
+            // são os mesmos dos parâmetros.
+            if (aux.element.equalsIgnoreCase(palavra)) {
+                if (aux.paginas.aumentaOcorrencia(numero)) {
+                    aux.totalOcorrencias++;
+                    return;
+                }
+                aux.totalOcorrencias++;
+                aux.paginas.add(numero);
+                return;
+            }
+            aux = aux.next;
+        }
     }
 
     public boolean containsElementAndPage(String element, int numero) {
@@ -306,32 +349,6 @@ public class LinkedListOfWord {
         return palavra;
     }
 
-    public Node getNodo(String palavra) {
-        Node aux = head;
-        for (int i = 1; i < count; i++) {
-            if (aux.element.equals(String.valueOf(palavra))) {
-                System.out.println("Entrou no if");
-                return aux;
-            }
-            aux = aux.next;
-        }
-        System.out.println("Retorna null no getNodo");
-        return null;
-    }
-
-    public Node getNodo(int indice) {
-        if (indice < 0 || indice > count) {
-            return null;
-        }
-        Node aux = head;
-        int contador = 0;
-        while (aux != null && contador < indice) {
-            aux = aux.next;
-            contador++;
-        }
-        return aux;
-    }
-
     public int getTotalDeTodasAsOcorrencias() {
         Node aux = head;
         int total = 0;
@@ -340,6 +357,24 @@ public class LinkedListOfWord {
             aux = aux.next;
         }
         return total;
+    }
+
+    public LinkedListOfWord mostraOrdenado() throws Exception {
+        Node atual;
+        int gira = 0;
+        while (gira < count) {
+            atual = head;
+            while (atual != null && atual.next != null) {
+                if (atual.element.compareTo(atual.next.element) > 0) {
+                    modificarNodos(atual.next.element);
+                }
+                if (atual.next != null) {
+                    atual = atual.next;
+                }
+            }
+            gira++;
+        }
+        return this;
     }
 
     private boolean modificarNodos(String elemento) {
@@ -373,10 +408,10 @@ public class LinkedListOfWord {
             head.next.next = prev.next;
             return true;
         }
-        return modificaNodosHelper(elemento);        
+        return modificaNodosHelper(elemento);
     }
-    
-    public boolean modificaNodosHelper(String elemento){
+
+    public boolean modificaNodosHelper(String elemento) {
         Node prev = head;
         Node atual = head.next;
         Node proximo = head.next.next;
@@ -399,46 +434,72 @@ public class LinkedListOfWord {
         }
         return false;
     }
-    
-    public LinkedListOfWord mostraOrdenado() throws Exception {
-        Node atual;
-        int gira = 0;
-        System.out.println("Count: " + count);
-        while (gira < count) {
-            atual = head;
-            while (atual != null && atual.next != null) {
-                if (atual.element.compareTo(atual.next.element) > 0) {
-                    modificarNodos(atual.next.element);
-                }
-                if (atual.next != null) {
-                    atual = atual.next;
-                }
-            }
-            gira++;
-        }
-        return this;
-    }
 
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        Node aux = head;
-        int contador = 0;
-        while (contador < count) {
-            s.append("\n");
-            s.append("Palavra: ");
-            s.append(aux.element);
-            s.append("\n");
-            s.append("Páginas (Número da página , Ocorrências na Página): { ");
-            s.append(aux.paginas);
-            s.append(" }");
-            s.append("\n");
-            s.append("Total de ocorrências da palavra: ");
-            s.append(aux.totalOcorrencias);
-            s.append("\n");
-            aux = aux.next;
-            contador++;
+    public String buscaPaginaMaisReferenciada(LinkedListOfWord stopWords) {
+        try {
+            if (stopWords == null) {
+                throw new NullPointerException("Lista de Stop Words está vazia.");
+            }
+            if (this.arquivo == null) {
+                throw new NullPointerException("Não há arquivo na lista principal para ser lido.");
+            }
+            String resposta = "";
+            LinkedListOfWord auxiliares = new LinkedListOfWord();
+            BufferedReader arquivo
+                    = new BufferedReader(new FileReader(this.arquivo));
+            String[] linha;
+            int contadorLinha = 1;
+            int contadorPagina = 1;
+            int referenciasPagina = 0;
+            int contadorReferencia = 0;
+            int numeroPagina = 0;
+            while (arquivo.ready()) {
+                if (contadorLinha > 40) {
+                    contadorPagina++;
+                    contadorLinha = 1;
+                    if (contadorReferencia > referenciasPagina) {
+                        referenciasPagina = contadorReferencia;
+                        numeroPagina = contadorPagina-1;
+                    }
+                    contadorReferencia = 0;
+                    auxiliares = new LinkedListOfWord();
+                }
+                linha = arquivo.readLine().split(" |\\-");
+                for (int i = 0; i < linha.length; i++) {
+                    String palavra = Util.removeSomeCharacters(linha[i]);
+                    if (!palavra.equals("") && !stopWords.containsElement(palavra)
+                            && !auxiliares.containsElement(palavra)) {
+                        //int indice = indexOf(palavra);
+                        Node helper = get(palavra);
+                        if (helper != null) {
+                            //Node helper = get(indice);
+                            auxiliares.add(palavra);
+                            for (int j = 0; j < helper.paginas.size(); j++) {
+                                LinkedListOfPage.Page page = helper.paginas.get(j);
+                                if (page.nroPagina == contadorPagina) {
+                                    contadorReferencia += page.ocorrencia;
+                                    j = helper.paginas.size();
+                                }
+                            }
+                        }
+                    }
+                }
+                contadorLinha++;
+            }
+            arquivo.close();
+            if(contadorReferencia > referenciasPagina){
+                referenciasPagina = contadorReferencia;
+                numeroPagina = contadorPagina;
+            }
+            resposta = "Número da página: " + numeroPagina;
+            resposta += "\nTotal de referências na página: " + referenciasPagina;
+            return resposta;
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-        return s.toString();
+        return null;
     }
+    
+    
+    
 }

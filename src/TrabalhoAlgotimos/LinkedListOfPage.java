@@ -3,11 +3,10 @@ package TrabalhoAlgotimos;
 public class LinkedListOfPage {
 
     // Classe interna Page
-    private class Page {
+    public class Page {
 
         public Integer ocorrencia;
         public Integer nroPagina;
-        public int totalOcorrencias;
         public Page next;
 
         public Page(Integer element) {
@@ -40,7 +39,6 @@ public class LinkedListOfPage {
      */
     public void add(Integer element) {
         Page aux = new Page(element);
-        aux.totalOcorrencias++;
         if (head == null) {
             head = aux;
         } else {
@@ -101,6 +99,19 @@ public class LinkedListOfPage {
             c++;
         }
         return (aux.nroPagina);
+    }
+    
+    public Page get(int index) {
+        if ((index < 0) || (index >= count)) {
+            throw new IndexOutOfBoundsException();
+        }
+        Page aux = head;
+        int c = 0;
+        while (c < index) {
+            aux = aux.next;
+            c++;
+        }
+        return (aux);
     }
     
     /**
@@ -278,10 +289,11 @@ public class LinkedListOfPage {
         Page aux = head;
 
         while (aux != null) {
-            s.append("(");
+            s.append("(Num: ");
             s.append(aux.nroPagina);
-            s.append(" , ");
-            s.append(aux.ocorrencia + ")");
+            s.append(" , Oco: ");
+            s.append(aux.ocorrencia);
+            s.append(")");
             if(!aux.equals(tail)){
                 s.append(" , ");
             }
@@ -296,7 +308,6 @@ public class LinkedListOfPage {
         for (int i = 0; i < count; i++) { //1
             if (aux.nroPagina == numeroP) {
                 aux.ocorrencia++;
-                aux.totalOcorrencias++;
                 return true;
             }
             aux = aux.next;
