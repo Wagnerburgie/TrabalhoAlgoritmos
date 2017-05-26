@@ -131,7 +131,7 @@ public class App {
                     contadorLinha = 1;
                 }
                 // Transforma a linha num array de Strings.
-                linha = arquivo.readLine().split(" |\\-");
+                linha = arquivo.readLine().split(" ");
                 // Cria um for pra percorrer as Strings da linha.
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
@@ -192,7 +192,7 @@ public class App {
                     contadorLinha = 1;
                 }
                 // Transforma a linha num array de Strings.
-                linha = arquivo.readLine().split(" |\\-");
+                linha = arquivo.readLine().split(" ");
                 // Cria um for pra percorrer as Strings da linha.
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
@@ -301,7 +301,7 @@ public class App {
                     contadorLinha = 1;
                 }
                 linha = arquivo.readLine();
-                array = linha.split(" |\\-");
+                array = linha.split(" ");
                 if (contadorPagina == numeroPagina) {
                     String texto = "";
                     if (linha.contains(palavra)) {

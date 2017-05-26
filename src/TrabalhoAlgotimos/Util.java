@@ -24,18 +24,13 @@ public class Util {
                 replace("¹", "").replace("²", "").replace("³", "").
                 replace("£", "").replace("¢", "").replace("¬", "").
                 replace("°", "").replace(":", "").replace("º", "");
-        String resposta = null;
-        if (!resultado.equals("")) {
-            if (resultado.indexOf("'") == (resultado.length() - 1)) {
-                resposta = resultado.replace("'", "");
-                return resposta;
-            } else if (resultado.indexOf("'") == 0) {
-                for (int i = 1; i < resultado.length(); i++) {
-                    resposta += resultado.charAt(i);
-                }
-                return resposta;
-            }
-        }
+        String resposta = resultado;
+        resposta = resultado.replace("'", " ");
+        resultado = resposta.trim();
+        resposta = resultado.replace(" ", "'");
+        resultado = resposta.replace("-", " ");
+        resposta = resultado.trim();
+        resultado = resposta.replace(" ", "-");
         return resultado;
     }
 }
