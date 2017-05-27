@@ -464,7 +464,7 @@ public class LinkedListOfWord {
                     contadorReferencia = 0;
                     auxiliares = new LinkedListOfWord();
                 }
-                linha = arquivo.readLine().split(" |\\-");
+                linha = arquivo.readLine().split(" ");
                 for (int i = 0; i < linha.length; i++) {
                     String palavra = Util.removeSomeCharacters(linha[i]);
                     if (!palavra.equals("") && !stopWords.containsElement(palavra)
