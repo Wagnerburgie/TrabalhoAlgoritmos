@@ -47,7 +47,7 @@ public class App {
                             encontrarPalavraMaisFrequente(listaSemStopWords);
                             break;
                         case 4:
-                            System.out.print("Digite a palavra que você deseja pesquisar: ");
+                            System.out.print("\nDigite a palavra que você deseja pesquisar: ");
                             String palavra = in.next();
                             pesquisarPalavra(listaSemStopWords, palavra);
                             break;
@@ -131,7 +131,7 @@ public class App {
                     contadorLinha = 1;
                 }
                 // Transforma a linha num array de Strings.
-                linha = arquivo.readLine().split(" ");
+                linha = arquivo.readLine().split(" |\\--");
                 // Cria um for pra percorrer as Strings da linha.
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
@@ -192,7 +192,7 @@ public class App {
                     contadorLinha = 1;
                 }
                 // Transforma a linha num array de Strings.
-                linha = arquivo.readLine().split(" ");
+                linha = arquivo.readLine().split(" |\\--");
                 // Cria um for pra percorrer as Strings da linha.
                 for (int i = 0; i < linha.length; i++) {
                     // Pega somente os caracteres necessários
@@ -242,14 +242,12 @@ public class App {
         float totalOcorrenciasDePalavrasNoTexto
                 = totalOcorrenciasComStopWords + totalOcorrenciasSemStopWords;
         float resultado = (totalOcorrenciasComStopWords * 100) / totalOcorrenciasDePalavrasNoTexto;
-        System.out.println(totalOcorrenciasComStopWords);
-        System.out.println(totalOcorrenciasSemStopWords);
-        System.out.println(totalOcorrenciasDePalavrasNoTexto);
-        System.out.println("Porcentagem: " + resultado + "%");
+        System.out.println("\nPorcentagem: " + resultado + "%\n");
     }
 
     private static void encontrarPalavraMaisFrequente(LinkedListOfWord listaSemStopWords) {
-        System.out.println("Palavra mais frequente: " + listaSemStopWords.getPalavraMaisFrequente());
+        System.out.println("\nPalavra mais frequente: " +
+                listaSemStopWords.getPalavraMaisFrequente() + "\n");
     }
 
     private static void pesquisarPalavra(LinkedListOfWord listaSemStopWords, String palavra) throws IOException {
@@ -270,14 +268,14 @@ public class App {
                 }
             }
             if (!achouPagina) {
-                System.out.println("Desculpe. O número da página que "
+                System.out.println("\nDesculpe. O número da página que "
                         + "você digitou não corresponde aos números "
                         + "de páginas em que a palavra aparece.\n");
             } else {
                 System.out.println(mostrarPaginaComPalavra(palavra, num, listaSemStopWords.getArquivo()));
             }
         } else {
-            System.out.println("Desculpe. Essa palavra não foi "
+            System.out.println("\nDesculpe. Essa palavra não foi "
                     + "encontrada na estrutura encadeada.\n");
         }
     }
@@ -301,7 +299,7 @@ public class App {
                     contadorLinha = 1;
                 }
                 linha = arquivo.readLine();
-                array = linha.split(" ");
+                array = linha.split(" |\\--");
                 if (contadorPagina == numeroPagina) {
                     String texto = "";
                     if (linha.contains(palavra)) {
