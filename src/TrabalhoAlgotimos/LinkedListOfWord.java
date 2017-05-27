@@ -358,17 +358,35 @@ public class LinkedListOfWord {
         }
         return total;
     }
-
+    
+    // Método de ordenação em ordem alfabética. 
+    // Nos baseamos no BubbleSort para fazer esse método.
     public LinkedListOfWord mostraOrdenado() throws Exception {
         Node atual;
         int gira = 0;
+        // Primeiro while que vai chamar outro while,
+        // fazendo assim o if testar a comparação das palavras de todos com todos.
         while (gira < count) {
+            // O nodo atual sempre voltará para o head 
+            // para novamente realizar a comparação.
             atual = head;
+            // Segundo while que fará o nodo atual percorrer a estrutura do início ao fim,
+            // testando se ele é nulo e se o next dele é nulo também (já que
+            // vamos chamar o next dele várias vezes e se o atual for nulo, 
+            // não poderemos chamar o next do atual, pois senão daria erro.
             while (atual != null && atual.next != null) {
+                // Testa se a palavra do próximo nodo vem antes da palavra do nodo atual.
                 if (atual.element.compareTo(atual.next.element) > 0) {
+                    // Se vier antes, chama o método para colocar 
+                    // a palavra na posição certa, enviando ela como parâmetro.
                     modificarNodos(atual.next.element);
                 }
+                // Esse teste é para manter a segurança de que não irá dar erro
+                // como explicado nos comentários acima deste while.
                 if (atual.next != null) {
+                    // Se o próximo não for nulo, pode fazer o nodo andar para o próximo.
+                    // Caso não tivesse esse teste e o atual fosse nulo, 
+                    // quando chamasse o próximo de um nodo nulo daria erro.
                     atual = atual.next;
                 }
             }
@@ -378,28 +396,47 @@ public class LinkedListOfWord {
     }
 
     private boolean modificarNodos(String elemento) {
+        // Os dois testes abaixo são apenas para segurança do método.
         if (isEmpty()) {
             throw new NullPointerException("Lista vazia!");
         }
         if (count == 1) {
             return true;
         }
+        // Para realizarmos a modificação da ordem dos nodos,
+        // precisaremos de início de pelo menos dois nodos: 
+        // Um atual e um que virá antes do atual.
         Node prev = head;
         Node atual = head.next;
+        // Para poder ser feita a modificação, a palavra que está sendo modificada,
+        // terá que vir através do nodo que está na frente do prev, já que ela será
+        // passada para trás. Então não faria sentido ela ser o prev. Por isso,
+        // se cair nesse teste terá que retornar falso.
         if (prev.element.equals(elemento)) {
             return false;
         }
+        // Testa se a palavra se encontra no nodo atual caso tenham apenas dois
+        // nodos na estrutura encadeada.
         if (count == 2 && atual.element.equals(elemento)) {
+            // É necessário de um nodo auxiliar para o atual,
+            // já que estaremos fazendo ele receber o prev, portando
+            // irá mudar de referência e para depois fazermos o prev receber
+            // a referência antiga dele, ela terá que estar guardada num nodo auxiliar.
             Node aux = atual;
             atual = prev;
             prev = aux;
+            // Já que o count é 2, teremos que fazer o head e o tail receber
+            // os nodos modificados.
             head = prev;
             tail = atual;
             head.next = tail;
             tail.next = null;
             return true;
         }
+        // Mesmo teste do de cima, porém se o count for maior que 2.
         if (atual.element.equals(elemento)) {
+            // Mesmo processo do if anterior, porém já que o count é maior que 2
+            // não precisaremos fazer o tail receber um nodo, apenas o head.
             Node aux = prev.next;
             Node helper = head;
             prev.next = prev.next.next;
@@ -408,30 +445,54 @@ public class LinkedListOfWord {
             head.next.next = prev.next;
             return true;
         }
+        // Iremos chamar esse método apenas se não cair em nenhuma situação acima.
         return modificaNodosHelper(elemento);
     }
 
     public boolean modificaNodosHelper(String elemento) {
+        // Agora precisaremos de 3 nodos, pois os testes não serão mais
+        // apenas com o segundo elemento da estrutura, mas podem ser com qualquer
+        // um que seja do terceiro para cima. Logo, para o teste, teremos testar
+        // sempre o nodo próximo e não os outros.
         Node prev = head;
         Node atual = head.next;
         Node proximo = head.next.next;
+        // Já que o teste pode ser com qualquer nodo da estrutura que seja do terceiro
+        // ao último, precisaremos percorrer a estrutura de novo dentro de um while,
+        // até achar a palavra que precisa ser modificada.
         while (proximo != null) {
+            // Testa se a palavra que está no nodo próximo é a palavra que procuramos.
             if (proximo.element.equals(elemento)) {
+                // Se for, precisamos colocar o nodo proximo na posição do nodo atual
+                // e o nodo atual na posição do nodo proximo. Para isso, precisaremos
+                // de dois nodos auxiliares agora: Um para o proximo e outro para o atual.
                 Node aux = proximo;
                 Node helper = atual;
+                // Eliminamos o nodo proximo.
                 atual.next = atual.next.next;
+                // Fazemos o nodo atual receber o auxiliar do nodo proximo.
                 prev.next = aux;
+                // Fazemos a posição do nodo proximo eliminada receber o auxiliar
+                // do nodo atual.
                 prev.next.next = helper;
+                // Aqui, por segurança, fazemos o next do nodo que está na posição
+                // em que se encontrava o proximo receber o que era o next do proximo.
                 prev.next.next.next = atual.next;
+                // Precisamos testar se o nodo que mudamos de posição era o último.
                 if (proximo.equals(tail)) {
+                    // Se for, o tail tem que recebê-lo.
                     tail = prev.next.next;
                 }
+                // Feita a modificação, retorna true.
                 return true;
             }
+            // Aqui os nodos vão percorrendo a estrutura, cada um em suas posições
+            // de antes, atual e próximo.
             prev = prev.next;
             atual = atual.next;
             proximo = proximo.next;
         }
+        // Se não achou a palavra, retorna false.
         return false;
     }
 
