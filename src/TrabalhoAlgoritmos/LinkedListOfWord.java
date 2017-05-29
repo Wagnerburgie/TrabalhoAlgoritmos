@@ -530,10 +530,8 @@ public class LinkedListOfWord {
                     String palavra = Util.removeSomeCharacters(linha[i]);
                     if (!palavra.equals("") && !stopWords.containsElement(palavra)
                             && !auxiliares.containsElement(palavra)) {
-                        //int indice = indexOf(palavra);
                         Node helper = get(palavra);
                         if (helper != null) {
-                            //Node helper = get(indice);
                             auxiliares.add(palavra);
                             for (int j = 0; j < helper.paginas.size(); j++) {
                                 LinkedListOfPage.Page page = helper.paginas.get(j);
