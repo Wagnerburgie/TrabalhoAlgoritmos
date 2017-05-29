@@ -1,4 +1,4 @@
-package TrabalhoAlgotimos;
+package TrabalhoAlgoritmos;
 
 public class LinkedListOfPage {
 

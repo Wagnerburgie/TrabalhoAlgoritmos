@@ -1,4 +1,4 @@
-package TrabalhoAlgotimos;
+package TrabalhoAlgoritmos;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

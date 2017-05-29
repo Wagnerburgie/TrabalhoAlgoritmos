@@ -1,4 +1,4 @@
-package TrabalhoAlgotimos;
+package TrabalhoAlgoritmos;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -97,8 +97,7 @@ public class App {
             }
             // Fecha o arquivo.
             arquivo.close();
-            // Retorna a lista com as palavras que não 
-            // devem conter no arquivo alice.txt.
+            // Retorna a lista de stopwords.
             return lista;
         } catch (IOException e) {
             return null;
@@ -111,11 +110,11 @@ public class App {
             // Cria a lista que irá conter todas as palavras do arquivo
             // enviado por parâmetro que não estão presentes na lista stopWords.
             LinkedListOfWord alice = new LinkedListOfWord(texto);
-            // Pega o arquivo alice.txt dentro do pacote documentos.
+            // Pega o arquivo dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader(texto));
             // Cria o array que irá conter todas as palavras
-            // de cada linha do arquivo alice.txt.
+            // de cada linha do arquivo.
             String[] linha;
             // Criando contador para indicar a linha.
             int contadorLinha = 1;
@@ -138,12 +137,12 @@ public class App {
                     // de cada String da linha.
                     String palavra = Util.removeSomeCharacters(linha[i]);
                     // Testa se a palavra não está presente
-                    // dentro da lista stopWords
+                    // dentro da lista stopWords e se não está em branco.
                     if (!stopWords.containsElement(palavra)
                             && !palavra.equals("")) {
                         // Caso a palavra não esteja na stopWords e 
                         // ainda não foi adicionada na lista,
-                        // ela será adicionada a lista alice.
+                        // ela será adicionada a lista.
                         if (!alice.containsElement(palavra)) {
                             ocorrencias = alice.getOccurrences(palavra, contadorPagina);
                             ocorrencias++;
@@ -170,13 +169,13 @@ public class App {
     public static LinkedListOfWord criaListaComAsStopWords(String texto, LinkedListOfWord stopWords) {
         try {
             // Cria a lista que irá conter todas as palavras do arquivo
-            // enviado por parâmetro que não estão presentes na lista stopWords.
+            // enviado por parâmetro que estão presentes na lista stopWords.
             LinkedListOfWord alice = new LinkedListOfWord(texto);
-            // Pega o arquivo alice.txt dentro do pacote documentos.
+            // Pega o arquivo dentro do pacote documentos.
             BufferedReader arquivo
                     = new BufferedReader(new FileReader(texto));
             // Cria o array que irá conter todas as palavras
-            // de cada linha do arquivo alice.txt.
+            // de cada linha do arquivo.
             String[] linha;
             // Criando contador para indicar a linha.
             int contadorLinha = 1;
@@ -199,12 +198,12 @@ public class App {
                     // de cada String da linha.
                     String palavra = Util.removeSomeCharacters(linha[i]);
                     // Testa se a palavra está presente
-                    // dentro da lista stopWords
+                    // dentro da lista stopWords e se ela não está em branco.
                     if (stopWords.containsElement(palavra)
                             && !palavra.equals("")) {
                         // Caso a palavra esteja na stopWords e 
                         // ainda não foi adicionada na lista,
-                        // ela será adicionada a lista alice.
+                        // ela será adicionada a lista.
                         if (!alice.containsElement(palavra)) {
                             ocorrencias = alice.getOccurrences(palavra, contadorPagina);
                             ocorrencias++;
@@ -216,7 +215,7 @@ public class App {
                         }
                     }
                 }
-                // Aumenta contador.
+                // Aumenta contador linha.
                 contadorLinha++;
             }
             // Fecha o arquivo.
